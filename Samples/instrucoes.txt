@@ -1,0 +1,57 @@
+Os arquivos a seguir contém drivers para os BDs especificados:
+
+mysql5.jar ---> MySQL
+ojdbc6.jar ---> Oracle
+sqljdbc4.jar -> MS-SQLserver
+
+Em PROJETOS CONVENCIONAIS (java projects), devem ser adicionados ao
+projeto, clicando com o botão direito do mouse sobre o nome do projeto,
+para então escolher PROPERTIES, JAVA BUILD PATH, LIBRARIES,
+ADD EXTERNAL JARS, localizar e indicar o arquivo do driver a ser
+adicionado.
+
+Em PROJETOS PARA A WEB (dynamic web projects), o arquivo do driver
+a ser adicionado deve ser arrastado e soltado na pasta 
+WEBCONTENT\WEB-INF\LIB de seu projeto.
+
+SEJA QUAL FOR O TIPO DE PROJETO, na classe DAOs que está na pasta
+daos, modificar a declaração do objeto bd, conforme o banco de dados
+que esteja sendo utilizado:
+
+
+// para MS-SQLServer (que é o que já está declarado)
+
+MeuPreparedStatement bd =
+new MeuPreparedStatement (
+"com.microsoft.sqlserver.jdbc.SQLServerDriver",
+"jdbc:sqlserver://SERVIDOR:1433;databasename=BD",
+"USUARIO", "SENHA");
+
+
+// para MySQL
+
+MeuPreparedStatement bd =
+new MeuPreparedStatement (
+"com.mysql.jdbc.Driver",
+"jdbc:mysql://SERVIDOR:3306/BD",
+"USUARIO", "SENHA");
+
+
+// para Oracle
+
+MeuPreparedStatement bd =
+new MeuPreparedStatement (
+"oracle.jdbc.driver.OracleDriver",
+"jdbc:oracle:thin:@SERVIDOR:1521:orcl",
+"USUARIO", "SENHA");
+
+
+Em todos os casos SERVIDOR, USUARIO e SENHA devem ser substituídos,
+respectivamente, pelo nome ou IP da do servidor de BD, pelo login e
+pela senha para "logar" no SGBD (SQL-Server, MySQL ou Oracle).
+
+Nos casos específicos de MySQL e MS-SQLServer, BD deve ser
+substituído pelo nome do banco de dados ao qual você tem acesso.
+
+OBS IMPORTANTE: NÃO SUBSTITUIR NENHUM OUTRO CARACTERE ALÉM DOS QUE
+                EXPLICITAMENTE MENCIONAMOS NESTAS INSTRUÇÕES.

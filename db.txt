@@ -1,0 +1,7 @@
+CREATE TABLE `players` (
+  `email` varchar(255) NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `password` text NOT NULL,
+  `registerDate` date NOT NULL,
+  `monthlyWins` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
