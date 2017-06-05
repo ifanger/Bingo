@@ -127,7 +127,7 @@ public class Players {
 		try
 		{	
 			GFResultSet result = null;
-			String sqlQuery = "SELECT email FROM players ORDER BY monthlyWins DESC LIMIT 3";
+			String sqlQuery = "SELECT email FROM players ORDER BY monthlyWins DESC";
 			
 			DB.command.prepareStatement(sqlQuery);
 			result = (GFResultSet) DB.command.executeQuery();
@@ -164,6 +164,7 @@ public class Players {
 			ranking = new Ranking(p1, p2, p3);
 		} catch(SQLException e)
 		{
+			e.printStackTrace();
 			throw new Exception("Falha ao obter ranking.");
 		}
 		
