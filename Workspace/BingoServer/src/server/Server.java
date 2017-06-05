@@ -1,9 +1,5 @@
 package server;
 
-import com.google.gson.Gson;
-
-import daos.Players;
-import protocol.Ranking;
 import threads.ServerThread;
 
 public class Server {
@@ -17,7 +13,8 @@ public class Server {
 					new ServerThread(Server.LISTEN_PORT);
 			
 			serverThread.start();
-		} catch(Exception e)
+		}
+		catch(Exception e)
 		{
 			e.printStackTrace();
 			System.err.println(e.getMessage());
