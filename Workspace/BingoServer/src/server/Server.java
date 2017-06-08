@@ -1,5 +1,6 @@
 package server;
 
+import threads.KeyboardThread;
 import threads.ServerThread;
 
 public class Server {
@@ -9,9 +10,11 @@ public class Server {
 	{
 		try
 		{
+			Thread kbThread = new KeyboardThread();
+			kbThread.start();
+			
 			ServerThread serverThread =
 					new ServerThread(Server.LISTEN_PORT);
-			
 			serverThread.start();
 		}
 		catch(Exception e)
