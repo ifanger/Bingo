@@ -11,14 +11,25 @@ import java.awt.Font;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
 
+import com.google.gson.Gson;
+
+import protocol.GFProtocol;
+import protocol.GFSecurity;
+import protocol.Player;
 import threads.Cliente;
+import threads.ConnectionThread;
+import threads.LoginListener;
+import utils.Connection;
 
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.Socket;
 import java.awt.event.ActionEvent;
 
 public class LoginWindow {
-
-	private Cliente conectora;
+	private Connection connection;
+	private LoginListener listener;
+	private Gson gson;
 	private JFrame frmBingoClient;
 	private JTextField txtEmail;
 	private JTextField txtSenha;
@@ -41,12 +52,45 @@ public class LoginWindow {
 	}
 
 	public LoginWindow() {
+		this.gson = new Gson();
 		initialize();
 	}
 	
 	public JFrame getBingoClient()
 	{
 		return this.frmBingoClient;
+	}
+	
+	public Connection getConnection()
+	{
+		return this.connection;
+	}
+	
+	public void login()
+	{
+		if(!this.connection.isConnected())
+		{
+			System.out.println("Nao conectado");
+		}
+		
+		Player player = new Player();
+		player.setEmail(txtEmail.getText());
+		player.setPassword(GFSecurity.passwordHash(txtSenha.getText()));
+		
+		this.connection.sendPacket(
+				String.format(GFProtocol.LOGIN_ACTION, 
+						this.gson.toJson(player)
+						));
+	}
+	
+	public void openGame()
+	{
+		
+	}
+	
+	public void showMessage(String text)
+	{
+		lbMensagem.setText(text);
 	}
 
 	/**
@@ -59,7 +103,7 @@ public class LoginWindow {
 		frmBingoClient.setBounds(100, 100, 330, 400);
 		frmBingoClient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmBingoClient.getContentPane().setLayout(new BorderLayout(0, 0));
-		frmBingoClient.setLocationRelativeTo(null); //start no centro
+		frmBingoClient.setLocationRelativeTo(null);
 		
 		JPanel panel = new JPanel();
 		frmBingoClient.getContentPane().add(panel, BorderLayout.CENTER);
@@ -92,7 +136,7 @@ public class LoginWindow {
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				login();
 			}
 		});
 		btnEntrar.setBounds(162, 122, 119, 37);
@@ -101,10 +145,10 @@ public class LoginWindow {
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				RegisterWindow Cadastro = new RegisterWindow(LoginWindow.this, (Cliente)conectora);
-				Cadastro.setVisible(true);
+				//RegisterWindow Cadastro = new RegisterWindow(LoginWindow.this, (Cliente)conectora);
+				//Cadastro.setVisible(true);
 				frmBingoClient.setVisible(false);
-				Cadastro.setLocationRelativeTo(null);
+				//Cadastro.setLocationRelativeTo(null);
 			}
 		});
 		btnCadastrar.setBounds(36, 122, 119, 37);
@@ -163,8 +207,9 @@ public class LoginWindow {
 		lbMensagem.setBounds(0, 97, 314, 14);
 		panel.add(lbMensagem);
 		
-		conectora = new Cliente();
-		conectora.setLabel(lbMensagem);
-		conectora.start();
+		ConnectionThread connectionThread =
+				new ConnectionThread(this, this.connection, this.listener);
+		connectionThread.start();
+		
 	}
 }
