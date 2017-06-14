@@ -31,7 +31,7 @@ public class ConnectionThread extends Thread {
 		} finally
 		{
 			this.connection = new Connection(socket);
-			this.listener = new LoginListener(loginWindow);
+			this.listener = new LoginListener(loginWindow, this.connection);
 			
 			if(socket != null)
 			{

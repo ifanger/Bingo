@@ -13,13 +13,17 @@ public class Connection {
 	
 	public Connection(Socket socket) {
 		this.socket = socket;
-		this.connected = !socket.isClosed();
 		
-		try {
-			this.output = new PrintStream(socket.getOutputStream());
-			this.input = new Scanner(socket.getInputStream());
-		} catch (IOException e) {
-			e.printStackTrace();
+		if(socket != null)
+		{
+			this.connected = socket.isConnected();
+			
+			try {
+				this.output = new PrintStream(socket.getOutputStream());
+				this.input = new Scanner(socket.getInputStream());
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 

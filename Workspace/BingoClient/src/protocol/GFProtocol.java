@@ -136,5 +136,22 @@ public class GFProtocol {
 		
 		return player;
 	}
+	
+	public static Player isLoggedIn(String packet)
+	{
+		String data = packet.substring(3);
+		Player player = null;
+		
+		if(getPacketType(packet) == PacketType.LOGIN_F)
+		{
+			try
+			{
+				player = gson().fromJson(data, Player.class);
+				return player;
+			} catch(Exception e) {}
+		}
+		
+		return player;
+	}
 
 }

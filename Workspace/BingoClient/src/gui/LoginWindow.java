@@ -83,6 +83,16 @@ public class LoginWindow {
 						));
 	}
 	
+	public void onLoginFailed()
+	{
+		showMessage("Usuário ou senha incorretos.");
+	}
+	
+	public void onLogginSuccess(Player player)
+	{
+		openGame();
+	}
+	
 	public void openGame()
 	{
 		
