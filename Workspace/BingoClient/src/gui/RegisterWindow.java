@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import threads.Cliente;
+import threads.RegisterListener;
 import utils.Connection;
 
 import javax.swing.JLabel;
@@ -40,6 +41,9 @@ public class RegisterWindow extends JFrame {
 	public RegisterWindow(LoginWindow janelaLogin, Connection connection) {
 		this.janelaLogin = janelaLogin;
 		this.connection = connection;
+		
+		RegisterListener rl = new RegisterListener(this.connection, this);
+		rl.start();
 		
 		setResizable(false);
 		setTitle("Cadastro de Jogadores");
