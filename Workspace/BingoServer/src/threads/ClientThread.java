@@ -57,9 +57,10 @@ public class ClientThread extends Thread {
 			
 			if(packetType == GFProtocol.PacketType.RANKING)
 			{
+				System.out.println("Solicitaram ranking");
 				Ranking ranking = null;
 				try {
-					ranking = DB.players.getRanking();
+					ranking = Players.getRanking();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

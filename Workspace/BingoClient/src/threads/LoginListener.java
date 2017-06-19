@@ -11,16 +11,19 @@ import utils.Connection;
 public class LoginListener extends Thread {
 	private LoginWindow login;
 	private Connection connection;
+	private boolean running = true;
 	
 	public LoginListener(LoginWindow parent, Connection connection)
 	{
 		this.login = parent;
 		this.connection = connection;
+		
+		this.connection.sendPacket(GFProtocol.RANKING_INFORMATION);
 	}
 
 	@Override
 	public void run() {
-		while(this.connection.isConnected())
+		while(this.running)
 		{
 			Scanner scanner = this.connection.getInput();
 			
@@ -36,7 +39,10 @@ public class LoginListener extends Thread {
 						if(receivedPlayer == null)
 							login.onLoginFailed();
 						else
+						{
 							login.onLogginSuccess(receivedPlayer);
+							stopThread();
+						}
 						break;
 					case GFProtocol.PacketType.RANKING:
 						System.out.println(receivedPacket);
@@ -58,7 +64,11 @@ public class LoginListener extends Thread {
 				}
 			}
 		}
-		
+	}
+	
+	private void stopThread()
+	{
+		this.running = false;
 	}
 	
 }

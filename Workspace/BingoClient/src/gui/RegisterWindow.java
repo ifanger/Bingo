@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import threads.Cliente;
+import utils.Connection;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -24,11 +25,21 @@ public class RegisterWindow extends JFrame {
 	private JTextField txtEmail;
 	private JTextField txtNome;
 	private LoginWindow janelaLogin;
-	private Thread thread;
+	private Connection connection;
+	
+	public void registerSuccess()
+	{
+		
+	}
+	
+	public void registerFailed()
+	{
+		
+	}
 
-	public RegisterWindow(LoginWindow janelaLogin, Cliente thread) {
+	public RegisterWindow(LoginWindow janelaLogin, Connection connection) {
 		this.janelaLogin = janelaLogin;
-		this.thread = thread;
+		this.connection = connection;
 		
 		setResizable(false);
 		setTitle("Cadastro de Jogadores");

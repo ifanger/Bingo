@@ -153,5 +153,13 @@ public class GFProtocol {
 		
 		return player;
 	}
+	
+	public static boolean isRegistred(String packet)
+	{
+		String data = packet.substring(4);
+		boolean response = (data.equals("T") ? true : false);
+		
+		return response;
+	}
 
 }

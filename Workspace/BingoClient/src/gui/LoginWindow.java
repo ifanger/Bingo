@@ -20,7 +20,7 @@ import threads.Cliente;
 import threads.ConnectionThread;
 import threads.LoginListener;
 import utils.Connection;
-import utils.EmailUtils;
+//import utils.EmailUtils;
 
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -90,11 +90,11 @@ public class LoginWindow {
 			return;
 		}
 		
-		if(!EmailUtils.isValidEmailAddress(loginEmail))
+		/*if(!EmailUtils.isValidEmailAddress(loginEmail))
 		{
 			showMessage("Endereço de e-mail inválido!");
 			return;
-		}
+		}*/
 		
 		Player player = new Player();
 		player.setEmail(txtEmail.getText());
@@ -279,10 +279,7 @@ public class LoginWindow {
 			if(socket != null)
 			{
 				if(socket.isConnected())
-				{
 					this.connection.setConnected(true);
-					this.connection.sendPacket(GFProtocol.RANKING_INFORMATION);
-				}
 				else
 					this.connection.setConnected(false);
 			} else {
