@@ -11,6 +11,7 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 
 import daos.Players;
+import db.DB;
 import game.Game;
 import game.PlayerHandler;
 import protocol.GFProtocol;
@@ -57,6 +58,12 @@ public class ClientThread extends Thread {
 			if(packetType == GFProtocol.PacketType.RANKING)
 			{
 				Ranking ranking = null;
+				try {
+					ranking = DB.players.getRanking();
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				this.handler.sendMessage(String.format(GFProtocol.RANKING_INFORMATION, gson.toJson(ranking)));
 			} else if(packetType == GFProtocol.PacketType.LOGIN)
 			{

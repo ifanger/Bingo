@@ -20,6 +20,7 @@ import threads.Cliente;
 import threads.ConnectionThread;
 import threads.LoginListener;
 import utils.Connection;
+import utils.EmailUtils;
 
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -34,6 +35,12 @@ public class LoginWindow {
 	private JTextField txtEmail;
 	private JTextField txtSenha;
 	private JLabel lbMensagem;
+	private JLabel lblJogador1;
+	private JLabel lblJogador2;
+	private JLabel lblJogador3;
+	private JLabel lblVitoria1;
+	private JLabel lblVitoria2;
+	private JLabel lblVitoria3;
 
 	/**
 	 * Launch the application.
@@ -68,9 +75,25 @@ public class LoginWindow {
 	
 	public void login()
 	{
-		if(!this.connection.isConnected())
+		if(this.connection == null || !this.connection.isConnected())
 		{
-			System.out.println("Nao conectado");
+			showMessage("Não conectado ao servidor.");
+			return;
+		}
+		
+		String loginEmail = txtEmail.getText();
+		String loginPassword = txtSenha.getText();
+		
+		if(loginEmail.trim().isEmpty() || loginPassword.trim().isEmpty())
+		{
+			showMessage("Preencha todos os campos!");
+			return;
+		}
+		
+		if(!EmailUtils.isValidEmailAddress(loginEmail))
+		{
+			showMessage("Endereço de e-mail inválido!");
+			return;
 		}
 		
 		Player player = new Player();
@@ -101,6 +124,30 @@ public class LoginWindow {
 	public void showMessage(String text)
 	{
 		lbMensagem.setText(text);
+	}
+
+	public JLabel getLblJogador1() {
+		return lblJogador1;
+	}
+
+	public JLabel getLblJogador2() {
+		return lblJogador2;
+	}
+
+	public JLabel getLblJogador3() {
+		return lblJogador3;
+	}
+	
+	public JLabel getLblVitoria1() {
+		return lblVitoria1;
+	}
+
+	public JLabel getLblVitoria2() {
+		return lblVitoria2;
+	}
+
+	public JLabel getLblVitoria3() {
+		return lblVitoria3;
 	}
 
 	/**
@@ -182,32 +229,32 @@ public class LoginWindow {
 		lblVitrias.setBounds(196, 241, 56, 14);
 		panel.add(lblVitrias);
 		
-		JLabel lblJogador1 = new JLabel("-");
+		lblJogador1 = new JLabel("-");
 		lblJogador1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblJogador1.setBounds(10, 266, 164, 14);
 		panel.add(lblJogador1);
 		
-		JLabel lblVitoria1 = new JLabel("-");
+		lblVitoria1 = new JLabel("-");
 		lblVitoria1.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVitoria1.setBounds(196, 266, 56, 14);
 		panel.add(lblVitoria1);
 		
-		JLabel lblVitoria2 = new JLabel("-");
+		lblVitoria2 = new JLabel("-");
 		lblVitoria2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVitoria2.setBounds(196, 291, 56, 14);
 		panel.add(lblVitoria2);
 		
-		JLabel lblVitoria3 = new JLabel("-");
+		lblVitoria3 = new JLabel("-");
 		lblVitoria3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblVitoria3.setBounds(196, 316, 56, 14);
 		panel.add(lblVitoria3);
 		
-		JLabel lblJogador2 = new JLabel("-");
+		lblJogador2 = new JLabel("-");
 		lblJogador2.setHorizontalAlignment(SwingConstants.CENTER);
 		lblJogador2.setBounds(10, 291, 164, 14);
 		panel.add(lblJogador2);
 		
-		JLabel lblJogador3 = new JLabel("-");
+		lblJogador3 = new JLabel("-");
 		lblJogador3.setHorizontalAlignment(SwingConstants.CENTER);
 		lblJogador3.setBounds(10, 316, 164, 14);
 		panel.add(lblJogador3);
@@ -217,9 +264,31 @@ public class LoginWindow {
 		lbMensagem.setBounds(0, 97, 314, 14);
 		panel.add(lbMensagem);
 		
-		ConnectionThread connectionThread =
-				new ConnectionThread(this, this.connection, this.listener);
-		connectionThread.start();
+		Socket socket = null;
+		try {
+			socket = new Socket("localhost", 8090);
+		} catch(IOException e)
+		{
+			e.printStackTrace();
+			showMessage("Não foi possível conectar-se ao servidor.");
+		} finally
+		{
+			this.connection = new Connection(socket);
+			this.listener = new LoginListener(this, this.connection);
+			
+			if(socket != null)
+			{
+				if(socket.isConnected())
+				{
+					this.connection.setConnected(true);
+					this.connection.sendPacket(GFProtocol.RANKING_INFORMATION);
+				}
+				else
+					this.connection.setConnected(false);
+			} else {
+				this.connection.setConnected(false);
+			}
+		}
 		
 	}
 }
