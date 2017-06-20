@@ -60,7 +60,7 @@ public class ClientThread extends Thread {
 				System.out.println("Solicitaram ranking");
 				Ranking ranking = null;
 				try {
-					ranking = Players.getRanking();
+					//ranking = Players.getRanking();
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

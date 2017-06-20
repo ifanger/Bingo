@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import protocol.Cartela;
+import server.Game;
 
 /**
  * Essa Thread é responsável por sortear novos números no bingo.
@@ -12,7 +13,6 @@ import protocol.Cartela;
  */
 public class BingoThread extends Thread {
 	private Game game;
-	private ArrayList<Integer> drawnNumbers = new ArrayList<Integer>();
 	
 	/**
 	 * O construtor recebe o jogo como parâmetro.
@@ -30,16 +30,19 @@ public class BingoThread extends Thread {
 		{
 			// Aguarda 5 segundos
 			try {
-				Thread.sleep(5000);
+				Thread.sleep(1000 * Game.SORT_DELAY);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 			
 			int n = Cartela.getRandomNumber();
-			while(drawnNumbers.contains(n))
+			while(this.game.getDrawnNumbers().contains(n))
+			{
 				n = Cartela.getRandomNumber();
+			}
 			
-			
+			this.game.getDrawnNumbers().add(n);
+			this.game.onNumberSorted(n);
 		}
 		
 	}

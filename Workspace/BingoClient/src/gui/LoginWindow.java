@@ -20,7 +20,7 @@ import threads.Cliente;
 import threads.ConnectionThread;
 import threads.LoginListener;
 import utils.Connection;
-//import utils.EmailUtils;
+import utils.EmailUtils;
 
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -90,11 +90,11 @@ public class LoginWindow {
 			return;
 		}
 		
-		/*if(!EmailUtils.isValidEmailAddress(loginEmail))
+		if(!EmailUtils.isValidEmailAddress(loginEmail))
 		{
 			showMessage("Endereço de e-mail inválido!");
 			return;
-		}*/
+		}
 		
 		Player player = new Player();
 		player.setEmail(txtEmail.getText());
@@ -119,6 +119,14 @@ public class LoginWindow {
 	public void openGame()
 	{
 		
+	}
+	
+	public void openRegister()
+	{
+		RegisterWindow registerWindow = new RegisterWindow(this, this.connection);
+		registerWindow.setVisible(true);
+		registerWindow.setLocationRelativeTo(null);
+		frmBingoClient.setVisible(false);
 	}
 	
 	public void showMessage(String text)
@@ -202,10 +210,7 @@ public class LoginWindow {
 		JButton btnCadastrar = new JButton("Cadastrar");
 		btnCadastrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//RegisterWindow Cadastro = new RegisterWindow(LoginWindow.this, (Cliente)conectora);
-				//Cadastro.setVisible(true);
-				frmBingoClient.setVisible(false);
-				//Cadastro.setLocationRelativeTo(null);
+				openRegister();
 			}
 		});
 		btnCadastrar.setBounds(36, 122, 119, 37);

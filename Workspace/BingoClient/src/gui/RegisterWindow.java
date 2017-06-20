@@ -4,9 +4,15 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import com.google.gson.Gson;
+
+import protocol.GFProtocol;
+import protocol.GFSecurity;
+import protocol.Player;
 import threads.Cliente;
 import threads.RegisterListener;
 import utils.Connection;
+import utils.EmailUtils;
 
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -28,14 +34,30 @@ public class RegisterWindow extends JFrame {
 	private LoginWindow janelaLogin;
 	private Connection connection;
 	
+	/**
+	 * Esse método é chamado quando o registro é bem sucedido.
+	 */
 	public void registerSuccess()
 	{
-		
+		JOptionPane.showMessageDialog(null, "Conta criada com sucesso!");
+		close();
 	}
 	
+	/**
+	 * Esse método é chamado quando o registro não é bem sucedido.
+	 */
 	public void registerFailed()
 	{
-		
+		JOptionPane.showMessageDialog(null, "Já existe um usuário cadastrado com esse nome!");
+	}
+	
+	/**
+	 * Fecha a janela atual
+	 */
+	public void close()
+	{
+		janelaLogin.getBingoClient().setVisible(true);
+		RegisterWindow.this.dispose();
 	}
 
 	public RegisterWindow(LoginWindow janelaLogin, Connection connection) {
@@ -116,27 +138,37 @@ public class RegisterWindow extends JFrame {
 				String senha2 = txtConfirma.getText();
 				String erro = "";
 				
+				if(nome.isEmpty() || email.isEmpty() || senha.isEmpty() || senha2.isEmpty())
+					return;
 				
-				if(nome.length()<3 && nome.length()>30){
-					erro = "Nome Inválido!";
+				if(nome.length() < 3 && nome.length() > 30)
+					erro = "Por favor, digite um nome válido. (de 3 a 30 caracteres)";
+				
+				else if(!senha.equals(senha2))
+					erro = "As senhas não correspondem.";
+				
+				else if(senha.length()<3)
+					erro = "A senha digitada é fraca demais.";
+				
+				else if(!EmailUtils.isValidEmailAddress(email))
+					erro = "O endereço de e-mail digitado é inválido.";
+				
+				if(!erro.isEmpty())
+					JOptionPane.showMessageDialog(null, erro);
+				else
+				{
+					Player p = new Player();
+					p.setName(nome);
+					p.setPassword(GFSecurity.passwordHash(senha));
+					p.setEmail(email);
+					p.setWinsCount(0);
+					
+					RegisterWindow.this.connection.sendPacket(
+							String.format(GFProtocol.REGISTER_ACTION, 
+									new Gson().toJson(p)
+									)
+							);
 				}
-				
-				else if (!senha.equals(senha2)){
-					erro = "A senha não corresponde!";					
-				}
-				
-				else if (nome.length()<3){
-					erro = "Senha fraca!";
-				}
-				
-				else if (!email.contains("@")){
-					erro = "Email Inválido";
-				}
-				
-				JOptionPane.showMessageDialog(null, "" + erro);
-				
-				janelaLogin.getBingoClient().setVisible(true);
-				RegisterWindow.this.dispose();
 			}
 		});
 		btnOK.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -146,45 +178,11 @@ public class RegisterWindow extends JFrame {
 		JButton btnCancelar = new JButton("Cancelar");
 		btnCancelar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Volta para a tela de Login
-					janelaLogin.getBingoClient().setVisible(true);
-					RegisterWindow.this.dispose();
+					close();
 				}
 		});
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnCancelar.setBounds(132, 162, 106, 35);
 		panel.add(btnCancelar);
-	}
-
-	public JTextField getTxtSenha() {
-		return txtSenha;
-	}
-
-	public void setTxtSenha(JTextField txtSenha) {
-		this.txtSenha = txtSenha;
-	}
-
-	public JTextField getTxtConfirma() {
-		return txtConfirma;
-	}
-
-	public void setTxtConfirma(JTextField txtConfirma) {
-		this.txtConfirma = txtConfirma;
-	}
-
-	public JTextField getTxtEmail() {
-		return txtEmail;
-	}
-
-	public void setTxtEmail(JTextField txtEmail) {
-		this.txtEmail = txtEmail;
-	}
-
-	public JTextField getTxtNome() {
-		return txtNome;
-	}
-
-	public void setTxtNome(JTextField txtNome) {
-		this.txtNome = txtNome;
 	}
 }
