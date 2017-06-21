@@ -31,6 +31,7 @@ public class Game extends Thread {
 			try {
 				Thread.sleep(1000 * 60);
 				currentCountDownTime++;
+				System.out.println((START_TIME - currentCountDownTime) + " minuto(s) para começar!");
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -91,6 +92,13 @@ public class Game extends Thread {
 	{
 		if(this.isGameStarted())
 		{
+			player.kick();
+			return;
+		}
+		
+		if(playerList.contains(player))
+		{
+			player.sendMessage("M/Conta já conectada!");
 			player.kick();
 			return;
 		}

@@ -28,15 +28,17 @@ public class ClientThread extends Thread {
 	protected Gson						gson			= null;
 	protected PlayerHandler				player 			= null;
 	protected boolean					connected		= false;
+	protected Ranking					ranking			= null;
 	
-	public ClientThread(Socket socket, ArrayList<ClientThread> clientList, SocketHandler handler, Game game)
+	public ClientThread(Socket socket, ArrayList<ClientThread> clientList, SocketHandler handler, Game game, Ranking ranking)
 	{
 		this.socket		= socket;
 		this.clientList	= clientList;
 		this.handler	= handler;
 		this.game		= game;
 		this.gson		= new Gson();
-		this.connected = true;
+		this.connected	= true;
+		this.ranking	= ranking;
 		
 		try {
 			this.input = new Scanner(this.socket.getInputStream());
@@ -57,14 +59,6 @@ public class ClientThread extends Thread {
 			
 			if(packetType == GFProtocol.PacketType.RANKING)
 			{
-				System.out.println("Solicitaram ranking");
-				Ranking ranking = null;
-				try {
-					//ranking = Players.getRanking();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				this.handler.sendMessage(String.format(GFProtocol.RANKING_INFORMATION, gson.toJson(ranking)));
 			} else if(packetType == GFProtocol.PacketType.LOGIN)
 			{
@@ -129,6 +123,7 @@ public class ClientThread extends Thread {
 
 	public void sendPacket(String packet)
 	{
+		System.out.println("Pacote enviado: " + packet);
 		this.handler.sendMessage(packet);
 	}
 	
