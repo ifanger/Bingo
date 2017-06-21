@@ -30,12 +30,12 @@ public class Game extends Thread {
 	/**
 	 * Tempo da contagem regressiva em minutos.
 	 */
-	public static final int START_TIME		= 10;
+	public static final int START_TIME		= 20;
 	
 	/**
 	 * Tempo da contagem regressiva para iniciar o jogo. (em segundos)
 	 */
-	public static final int COUNT_DOWN_TIME	= 60;
+	public static final int COUNT_DOWN_TIME	= 1;
 	
 	/**
 	 * Tamanho máximo de uma cartela.
@@ -91,6 +91,8 @@ public class Game extends Thread {
 		{
 			try {
 				Thread.sleep(1000 * COUNT_DOWN_TIME);
+				System.out.println("O jogo começa em " + (START_TIME - currentCountDownTime) + " minuto(s).");
+				broadcastPacket("M/O jogo começa em " + (START_TIME - currentCountDownTime) + " minuto(s).");
 				currentCountDownTime++;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -116,6 +118,8 @@ public class Game extends Thread {
 		// Thread responsável pelos sorteios
 		BingoThread sortThread = new BingoThread(this);
 		sortThread.start();
+		
+		broadcastPacket("M/O jogo começou!");
 	}
 	
 	/**
@@ -124,6 +128,7 @@ public class Game extends Thread {
 	public synchronized void end()
 	{
 		this.started = false;
+		broadcastPacket("M/O jogo terminou!");
 		
 		try {
 			Thread.sleep(1000 * DELAY_BTW_GAMES);
@@ -184,16 +189,22 @@ public class Game extends Thread {
 	 */
 	public synchronized void onPlayerJoined(PlayerHandler player)
 	{
+		if(player == null)
+			return;
+		
 		if(this.isGameStarted())
 		{
 			// Expulsa o jogador da sala
+			System.out.println(player.getName() + " tentou entrar em um jogo em andamento.");
 			player.kick();
 			return;
 		}
 		
-		// Gera uma cartela para o jogador
+		System.out.println(player.getName() + " entrou no jogo.");
 		player.setCartela(new Cartela());
 		playerList.add(player);
+		player.sendMessage(String.format(GFProtocol.CARTELA, new Gson().toJson(player.getCartela())));
+		broadcastPacket("M/" + player.getName() + " entrou.");
 	}
 	
 	/**
@@ -221,5 +232,17 @@ public class Game extends Thread {
 		
 		this.broadcastPacket(String.format(GFProtocol.END_GAME, playerString));
 		this.end();
+	}
+	
+	/**
+	 * Método chamado quando um jogador deixa o jogo.
+	 * @param player
+	 */
+	public synchronized void onPlayerLeft(PlayerHandler player)
+	{
+		if(player == null)
+			System.out.println("Um jogador deixou o jogo.");
+		else
+			System.out.println(player.getName() + " deixou o jogo.");
 	}
 }

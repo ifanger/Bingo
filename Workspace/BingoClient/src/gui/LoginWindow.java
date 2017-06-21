@@ -16,8 +16,6 @@ import com.google.gson.Gson;
 import protocol.GFProtocol;
 import protocol.GFSecurity;
 import protocol.Player;
-import threads.Cliente;
-import threads.ConnectionThread;
 import threads.LoginListener;
 import utils.Connection;
 import utils.EmailUtils;
@@ -30,6 +28,8 @@ import java.awt.event.ActionEvent;
 public class LoginWindow {
 	private Connection connection;
 	private LoginListener listener;
+	private RegisterWindow register;
+	private GameWindow game;
 	private Gson gson;
 	private JFrame frmBingoClient;
 	private JTextField txtEmail;
@@ -114,21 +114,19 @@ public class LoginWindow {
 	public void onLogginSuccess(Player player)
 	{
 		openGame();
-		listener.stopThread();
 	}
 	
 	public void openGame()
 	{
-		GameWindow gameWindow = new GameWindow();
-		
+		game.setVisible(true);
+		game.setLocationRelativeTo(null);
+		frmBingoClient.setVisible(false);
 	}
 	
 	public void openRegister()
 	{
-		this.listener.stopThread();
-		RegisterWindow registerWindow = new RegisterWindow(this, this.connection);
-		registerWindow.setVisible(true);
-		registerWindow.setLocationRelativeTo(null);
+		register.setVisible(true);
+		register.setLocationRelativeTo(null);
 		frmBingoClient.setVisible(false);
 	}
 	
@@ -282,7 +280,12 @@ public class LoginWindow {
 		} finally
 		{
 			this.connection = new Connection(socket);
-			this.listener = new LoginListener(this, this.connection);
+			register = new RegisterWindow(this, this.connection);
+			game = new GameWindow(this, this.connection);
+			register.setVisible(false);
+			game.setVisible(false);
+			
+			this.listener = new LoginListener(this, register, game, this.connection);
 			
 			if(socket != null)
 			{

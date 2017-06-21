@@ -8,46 +8,47 @@ import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.LayoutStyle.ComponentPlacement;
+
+import utils.Connection;
+
 import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
-public class GameWindow {
-
-	private JFrame frmJogo;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					GameWindow window = new GameWindow();
-					window.frmJogo.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
+public class GameWindow extends JFrame {
+	private LoginWindow login;
+	private Connection connection;
+	private JLabel lbMensagem;
+	
 	/**
 	 * Create the application.
 	 */
-	public GameWindow() {
+	public GameWindow(LoginWindow janelaLogin, Connection connection) {
 		initialize();
+		
+		this.login = janelaLogin;
+		this.connection = connection;
+	}
+	
+	public void showMessage(String message)
+	{
+		this.lbMensagem.setText(message);
+	}
+	
+	public void showMessageBox(String message)
+	{
+		JOptionPane.showMessageDialog(null, message);
 	}
 
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-		frmJogo = new JFrame();
-		frmJogo.setTitle("Jogo do Bingo");
-		frmJogo.setBounds(100, 100, 390, 500);
-		frmJogo.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setTitle("Jogo do Bingo");
+		setBounds(100, 100, 390, 500);
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		JButton btnB = new JButton("B");
 		btnB.setEnabled(false);
@@ -149,10 +150,10 @@ public class GameWindow {
 		JButton button_23 = new JButton("0");
 		button_23.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JLabel lbMensagem = new JLabel("Numero sorteado:");
+		lbMensagem = new JLabel("Aguardando servidor...");
 		lbMensagem.setHorizontalAlignment(SwingConstants.CENTER);
 		lbMensagem.setFont(new Font("Tahoma", Font.BOLD, 18));
-		GroupLayout groupLayout = new GroupLayout(frmJogo.getContentPane());
+		GroupLayout groupLayout = new GroupLayout(getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
@@ -274,6 +275,6 @@ public class GameWindow {
 					.addComponent(lbMensagem)
 					.addContainerGap(37, Short.MAX_VALUE))
 		);
-		frmJogo.getContentPane().setLayout(groupLayout);
+		getContentPane().setLayout(groupLayout);
 	}
 }

@@ -12,10 +12,15 @@ public class DB {
 	private static final String MYSQL_PASS	= "N2oTCVhmJY2rX55LRsYFn7XgXGFh8DXzcuWoESzeGsW7BxoXrEYrMg3Qdg55oamf";
 	*/
 	
-	private static final String MYSQL_IP	= "192.185.213.219";
+	/*private static final String MYSQL_IP	= "192.185.213.219";
 	private static final String MYSQL_DB	= "ifang650_bingo";
 	private static final String MYSQL_USER	= "ifang650_bingo";
-	private static final String MYSQL_PASS	= "TwpUrpbO$a%=";
+	private static final String MYSQL_PASS	= "TwpUrpbO$a%=";*/
+	
+	private static final String MYSQL_IP	= "172.16.12.12";
+	private static final String MYSQL_DB	= "bdsqlac14";
+	private static final String MYSQL_USER	= "bdsqlac14";
+	private static final String MYSQL_PASS	= "Rbtlr3";
 	
 	
 	static
@@ -28,8 +33,8 @@ public class DB {
 			
 			_command =
 		            new GFPreparedStatement (
-		            		"com.mysql.jdbc.Driver",
-		            		"jdbc:mysql://" + MYSQL_IP + ":3306/" + MYSQL_DB,
+		            		"com.microsoft.sqlserver.jdbc.SQLServerDriver",
+		            		"jdbc:sqlserver://" + MYSQL_IP + ":1433;databasename=" + MYSQL_DB,
 		            		MYSQL_USER, MYSQL_PASS);
 
 		    _players = new Players();

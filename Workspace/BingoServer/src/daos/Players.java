@@ -1,5 +1,6 @@
 package daos;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -64,12 +65,13 @@ public class Players {
 		{
 			String sqlQuery = "INSERT INTO players "
 					+ "(email, name, password, registerDate, monthlyWins) "
-					+ "VALUES (?, ?, ?, CURDATE(), 0)";
+					+ "VALUES (?, ?, ?, ?, 0)";
 			
 			DB.command.prepareStatement(sqlQuery);
 			DB.command.setString(1, player.getEmail());
 			DB.command.setString(2, player.getName());
 			DB.command.setString(3, player.getPassword());
+			DB.command.setDate(4, new Date(new java.util.Date().getTime()));
 			DB.command.executeUpdate();
 			DB.command.commit();
 		} catch(SQLException e)

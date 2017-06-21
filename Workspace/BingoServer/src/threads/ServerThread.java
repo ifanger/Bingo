@@ -6,8 +6,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import daos.Players;
-import game.Game;
 import protocol.Ranking;
+import server.Game;
 import server.SocketHandler;
 
 public class ServerThread extends Thread {
@@ -41,7 +41,7 @@ public class ServerThread extends Thread {
 			e1.printStackTrace();
 		}
 		System.out.println("Aguardando conexões.");
-		
+		game.start();
 		// Executa operações enquanto o servidor estiver vivo
 		while(!serverStopped)
 		{

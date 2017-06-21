@@ -1,5 +1,8 @@
 package server;
 
+import com.google.gson.Gson;
+
+import protocol.Cartela;
 import threads.KeyboardThread;
 import threads.ServerThread;
 

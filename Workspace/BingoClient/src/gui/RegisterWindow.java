@@ -11,7 +11,6 @@ import protocol.GFProtocol;
 import protocol.GFSecurity;
 import protocol.Player;
 import threads.Cliente;
-import threads.RegisterListener;
 import utils.Connection;
 import utils.EmailUtils;
 
@@ -32,6 +31,7 @@ public class RegisterWindow extends JFrame {
 	private JPasswordField txtConfirma;
 	private JTextField txtEmail;
 	private JTextField txtNome;
+	private JButton btnOK;
 	private LoginWindow janelaLogin;
 	private Connection connection;
 	
@@ -49,6 +49,8 @@ public class RegisterWindow extends JFrame {
 	 */
 	public void registerFailed()
 	{
+		btnOK.setEnabled(true);
+		setTitle("Cadastro de Jogadores");
 		JOptionPane.showMessageDialog(null, "Já existe um usuário cadastrado com esse endereço de e-mail!");
 	}
 	
@@ -124,7 +126,7 @@ public class RegisterWindow extends JFrame {
 		
 		
 		
-		JButton btnOK = new JButton("OK");
+		btnOK = new JButton("OK");
 		btnOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nome = txtNome.getText();
@@ -163,6 +165,9 @@ public class RegisterWindow extends JFrame {
 									new Gson().toJson(p)
 									)
 							);
+					
+					setTitle("Cadastrando usuário...");
+					btnOK.setEnabled(false);
 				}
 			}
 		});
@@ -179,8 +184,5 @@ public class RegisterWindow extends JFrame {
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnCancelar.setBounds(132, 162, 106, 35);
 		panel.add(btnCancelar);
-		
-		RegisterListener rl = new RegisterListener(this.connection, this);
-		rl.start();
 	}
 }

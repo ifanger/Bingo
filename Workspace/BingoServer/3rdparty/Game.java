@@ -79,17 +79,24 @@ public class Game extends Thread {
 	public synchronized void broadcast(String packet)
 	{
 		for(PlayerHandler player : this.playerList)
-			player.sendMessage(packet);
+			if(player != null)
+				player.sendMessage(packet);
 	}
 	
 	public synchronized void disconnect(PlayerHandler player)
 	{
+		if(player == null)
+			return;
+		
 		playerList.remove(player);
 		player.kick();
 	}
 	
 	public synchronized void onPlayerJoined(PlayerHandler player)
 	{
+		if(player == null)
+			return;
+		
 		if(this.isGameStarted())
 		{
 			player.kick();
@@ -109,6 +116,9 @@ public class Game extends Thread {
 	
 	public synchronized void onPlayerBingo(PlayerHandler player)
 	{
+		if(player == null)
+			return;
+		
 		Cartela playerCartela = player.getCartela();
 		
 		if(playerCartela == null)

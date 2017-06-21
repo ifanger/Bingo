@@ -161,5 +161,17 @@ public class GFProtocol {
 		
 		return response;
 	}
+	
+	public static int getDrawnNumber(String packet)
+	{
+		String data = packet.substring(3);
+		int n = -1;
+		
+		try {
+			n = Integer.parseInt(data);
+		} catch(Exception e) {}
+		
+		return n;
+	}
 
 }

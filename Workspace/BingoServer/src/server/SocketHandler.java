@@ -46,8 +46,6 @@ public class SocketHandler {
 	public void disconnect()
 	{
 		this.printStream.close();
-		try { this.socket.close(); }
-		catch(IOException e) {}
 	}
 	
 }

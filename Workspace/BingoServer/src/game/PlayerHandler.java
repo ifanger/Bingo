@@ -28,6 +28,7 @@ public class PlayerHandler extends Player {
 
 	public void kick()
 	{
+		this.sendMessage("MB/Você foi expulso do jogo!");
 		this.connection.disconnectPlayer();
 	}
 	
