@@ -30,17 +30,14 @@ public class BingoThread extends Thread {
 			while(this.numbersToSort.contains(n))
 				n = Cartela.getRandomNumber();
 			
-			this.numbersToSort.add(n, i);
-			System.out.println("Adicionado à lista de números: " + n);
+			this.numbersToSort.add(n);
 		}
-		
-		System.out.println(this.numbersToSort.toString());
 	}
 
 	@Override
 	public void run() {
 		
-		while(game.isGameStarted())
+		while(game.isGameStarted() && this.numbersToSort.size() > 0)
 		{
 			try {
 				Thread.sleep(1000 * Game.SORT_DELAY);
@@ -57,6 +54,8 @@ public class BingoThread extends Thread {
 			this.numbersToSort.remove(0);
 		}
 		
+		game.broadcastPacket("MB/Todos os números foram sorteados, mas ninguém pediu bingo!");
+		game.end();
 	}
 
 }

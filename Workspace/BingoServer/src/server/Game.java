@@ -114,6 +114,13 @@ public class Game extends Thread {
 			return;
 		}
 		
+		// não há jogadores, então nem inicia
+		if(this.playerList.size() == 0)
+		{
+			this.end();
+			return;
+		}
+		
 		this.started = true;
 		
 		// Thread responsável pelos sorteios
