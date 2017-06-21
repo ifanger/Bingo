@@ -13,6 +13,7 @@ import server.Game;
  */
 public class BingoThread extends Thread {
 	private Game game;
+	private ArrayList<Integer> numbersToSort;
 	
 	/**
 	 * O construtor recebe o jogo como parâmetro.
@@ -21,6 +22,19 @@ public class BingoThread extends Thread {
 	public BingoThread(Game game)
 	{
 		this.game = game;
+		this.numbersToSort = new ArrayList<Integer>();
+		
+		for(int i = 0; i < 98; i++)
+		{
+			int n = Cartela.getRandomNumber();
+			while(this.numbersToSort.contains(n))
+				n = Cartela.getRandomNumber();
+			
+			this.numbersToSort.add(n, i);
+			System.out.println("Adicionado à lista de números: " + n);
+		}
+		
+		System.out.println(this.numbersToSort.toString());
 	}
 
 	@Override
@@ -37,14 +51,10 @@ public class BingoThread extends Thread {
 			if(!game.isGameStarted())
 				return;
 			
-			int n = Cartela.getRandomNumber();
-			while(this.game.getDrawnNumbers().contains(n))
-			{
-				n = Cartela.getRandomNumber();
-			}
-			
+			int n = this.numbersToSort.get(0);
 			this.game.getDrawnNumbers().add(n);
 			this.game.onNumberSorted(n);
+			this.numbersToSort.remove(0);
 		}
 		
 	}

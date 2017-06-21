@@ -12,6 +12,7 @@ import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 
 import protocol.Cartela;
+import protocol.GFProtocol;
 import utils.Connection;
 
 import java.awt.Font;
@@ -95,6 +96,11 @@ public class GameWindow extends JFrame {
 		}
 		
 		btnBingo.setEnabled(false);
+		btnBingo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				connection.sendPacket(GFProtocol.BINGO);
+			}
+		});
 	}
 	
 	public void showMessage(String message)
@@ -117,18 +123,19 @@ public class GameWindow extends JFrame {
 			btn.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					if(btn.getBackground() == Color.WHITE)
-					{
 						btn.setBackground(Color.GRAY);
-						int n = 0;
-						for(JButton btn : buttons)
-							if((btn.getBackground() == Color.GRAY))
-								n++;
-						
-						if(n == 24)
-							btnBingo.setEnabled(true);
-					} else {
+					else
 						btn.setBackground(Color.WHITE);
-					}
+					
+					int n = 0;
+					for(JButton btn : buttons)
+						if((btn.getBackground() == Color.GRAY))
+							n++;
+					
+					if(n == 24)
+						btnBingo.setEnabled(true);
+					else
+						btnBingo.setEnabled(false);
 				}
 			});
 		}

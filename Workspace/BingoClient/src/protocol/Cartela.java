@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Cartela {
-	private static final int CARTELA_SIZE = 25;
+	private static final int CARTELA_SIZE = 24;
 	private ArrayList<Integer> cartela;
 
 	public Cartela()

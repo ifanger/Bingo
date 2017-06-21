@@ -228,6 +228,8 @@ public class Game extends Thread {
 		
 		if(pNumbers == MAX_CART_SIZE)
 			this.onPlayerWon(player);
+		else
+			player.sendMessage("MB/Você marcou algum número errado na cartela, pois nem todos os números foram sorteados.");
 	}
 	
 	/**
@@ -239,6 +241,7 @@ public class Game extends Thread {
 		String playerString = new Gson().toJson((Player) player);
 		
 		this.broadcastPacket(String.format(GFProtocol.END_GAME, playerString));
+		this.broadcastPacket("MB/O jogador " + player.getName() + " fez BINGO!");
 		this.end();
 	}
 	
@@ -249,7 +252,7 @@ public class Game extends Thread {
 	public void onPlayerLeft(PlayerHandler player)
 	{
 		if(player == null)
-			System.out.println("Um jogador deixou o jogo.");
+			System.out.println("Um jogador desconhecido deixou o jogo.");
 		else
 		{
 			System.out.println(player.getName() + " deixou o jogo.");
