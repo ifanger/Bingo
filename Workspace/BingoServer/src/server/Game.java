@@ -85,7 +85,7 @@ public class Game extends Thread {
 	/**
 	 * Inicia a contagem regressiva para início do jogo.
 	 */
-	public synchronized void startCountDown()
+	public void startCountDown()
 	{
 		while(currentCountDownTime < START_TIME)
 		{
@@ -105,7 +105,7 @@ public class Game extends Thread {
 	/**
 	 * Inicia o jogo.
 	 */
-	public synchronized void startGame()
+	public void startGame()
 	{
 		if(this.started)
 		{
@@ -125,7 +125,7 @@ public class Game extends Thread {
 	/**
 	 * Encerra o jogo e inicia outro após o tempo determinado.
 	 */
-	public synchronized void end()
+	public void end()
 	{
 		this.started = false;
 		broadcastPacket("M/O jogo terminou!");
@@ -142,7 +142,7 @@ public class Game extends Thread {
 	 * Verifica se o jogo está cheio ou não.
 	 * @return 'true' se estiver cheio, 'false' não esteja cheio.
 	 */
-	public synchronized boolean isFull()
+	public boolean isFull()
 	{
 		return this.playerList.size() >= Game.PLAYER_LIMIT;
 	}
@@ -151,7 +151,7 @@ public class Game extends Thread {
 	 * Verifica se o jogo já foi iniciado.
 	 * @return 'true' se foi iniciado, 'false' caso contrário.
 	 */
-	public synchronized boolean isGameStarted()
+	public boolean isGameStarted()
 	{
 		return this.started;
 	}
@@ -160,17 +160,21 @@ public class Game extends Thread {
 	 * Envia um pacote para todos os jogadores no jogo.
 	 * @param packet Pacote de dados a ser enviado.
 	 */
-	public synchronized void broadcastPacket(String packet)
+	public void broadcastPacket(String packet)
 	{
+		System.out.println(playerList);
 		for(PlayerHandler player : playerList)
+		{
+			System.out.println("Broadcast enviado para: " + player.getName());
 			player.sendMessage(packet);
+		}
 	}
 	
 	/**
 	 * Método chamado quando um número é sorteado pela BingoThread.
 	 * @param sortedNumber Número sorteado.
 	 */
-	public synchronized void onNumberSorted(int sortedNumber)
+	public void onNumberSorted(int sortedNumber)
 	{
 		this.broadcastPacket(String.format(GFProtocol.SORT_NUMBER, sortedNumber));
 	}
@@ -187,14 +191,13 @@ public class Game extends Thread {
 	 * Método chamado quando um jogador se junta à partida.
 	 * @param player Jogador que se juntou.
 	 */
-	public synchronized void onPlayerJoined(PlayerHandler player)
+	public void onPlayerJoined(PlayerHandler player)
 	{
 		if(player == null)
 			return;
 		
 		if(this.isGameStarted())
 		{
-			// Expulsa o jogador da sala
 			System.out.println(player.getName() + " tentou entrar em um jogo em andamento.");
 			player.kick();
 			return;
@@ -226,7 +229,7 @@ public class Game extends Thread {
 	 * Método chamado quando um jogador vence o jogo.
 	 * @param player Jogador vitorioso.
 	 */
-	public synchronized void onPlayerWon(PlayerHandler player)
+	public void onPlayerWon(PlayerHandler player)
 	{
 		String playerString = new Gson().toJson((Player) player);
 		
@@ -238,7 +241,7 @@ public class Game extends Thread {
 	 * Método chamado quando um jogador deixa o jogo.
 	 * @param player
 	 */
-	public synchronized void onPlayerLeft(PlayerHandler player)
+	public void onPlayerLeft(PlayerHandler player)
 	{
 		if(player == null)
 			System.out.println("Um jogador deixou o jogo.");

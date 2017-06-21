@@ -56,7 +56,6 @@ public class ClientThread extends Thread {
 			while(this.socket.isConnected() && (receivedPacket = this.input.readLine()) != null)
 			{
 				int packetType = GFProtocol.getPacketType(receivedPacket);
-				
 				System.out.println("Recebido: " + receivedPacket);
 				
 				if(packetType == GFProtocol.PacketType.RANKING)
@@ -64,6 +63,9 @@ public class ClientThread extends Thread {
 					this.handler.sendMessage(String.format(GFProtocol.RANKING_INFORMATION, gson.toJson(ranking)));
 				} else if(packetType == GFProtocol.PacketType.LOGIN)
 				{
+					if(player != null)
+						return;
+					
 					Player receivedPlayer = GFProtocol.getPlayerFromLoginPacket(receivedPacket);
 					boolean success = false;
 					Player dbPlayer = null;
@@ -86,10 +88,7 @@ public class ClientThread extends Thread {
 					this.sendPacket(String.format(GFProtocol.LOGIN_RESPONSE, ((success) ? gson.toJson(dbPlayer) : "F" )));
 					
 					if(success && this.player != null)
-					{
-						System.out.println("O jogador " + player.getName() + " entrou no jogo.");
 						game.onPlayerJoined(player);
-					}
 				} else if(packetType == GFProtocol.PacketType.REGISTER)
 				{
 					Player newPlayer = GFProtocol.getPlayerFromRegisterPacket(receivedPacket);
@@ -107,7 +106,13 @@ public class ClientThread extends Thread {
 					this.sendPacket(String.format(GFProtocol.REGISTER_RESPONSE, ((success) ? "T" : "F")));
 				} else if(packetType == GFProtocol.PacketType.BINGO)
 				{
+					if(player == null)
+					{
+						System.out.println("Pediram bingo de maneira incorreta.");
+						return;
+					}
 					
+					game.onPlayerBingo(player);
 				}
 				else
 				{
@@ -124,6 +129,9 @@ public class ClientThread extends Thread {
 	
 	public void disconnectPlayer()
 	{
+		if(socket == null || input == null)
+			return;
+		
 		this.disconnect();
 		this.game.onPlayerLeft(player);
 	}
@@ -141,6 +149,9 @@ public class ClientThread extends Thread {
 		try {
 			this.socket.close();
 			this.input.close();
+			
+			this.socket = null;
+			this.input = null;
 		} catch (IOException e) {}
 		this.connected = false;
 	}

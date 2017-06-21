@@ -173,5 +173,22 @@ public class GFProtocol {
 		
 		return n;
 	}
+	
+	public static Cartela getCartela(String packet)
+	{
+		String data = packet.substring(4);
+		Cartela cartela = null;
+		
+		if(getPacketType(packet) == PacketType.CARTELA)
+		{
+			try
+			{
+				cartela = gson().fromJson(data, Cartela.class);
+			} catch(Exception e)
+			{}
+		}
+		
+		return cartela;
+	}
 
 }

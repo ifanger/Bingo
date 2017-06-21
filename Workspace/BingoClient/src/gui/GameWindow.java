@@ -6,9 +6,11 @@ import javax.swing.JButton;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
+import protocol.Cartela;
 import utils.Connection;
 
 import java.awt.Font;
@@ -21,6 +23,31 @@ public class GameWindow extends JFrame {
 	private LoginWindow login;
 	private Connection connection;
 	private JLabel lbMensagem;
+	private JButton button_0;
+	private JButton button_1;
+	private JButton button_2;
+	private JButton button_3;
+	private JButton button_4;
+	private JButton button_5;
+	private JButton button_6;
+	private JButton button_7;
+	private JButton button_8;
+	private JButton button_9;
+	private JButton button_10;
+	private JButton button_11;
+	private JButton button_12;
+	private JButton button_13;
+	private JButton button_14;
+	private JButton button_15;
+	private JButton button_16;
+	private JButton button_17;
+	private JButton button_18;
+	private JButton button_19;
+	private JButton button_20;
+	private JButton button_21;
+	private JButton button_22;
+	private JButton button_23;
+	private ArrayList<JButton> buttons;
 	
 	/**
 	 * Create the application.
@@ -30,6 +57,35 @@ public class GameWindow extends JFrame {
 		
 		this.login = janelaLogin;
 		this.connection = connection;
+		this.buttons = new ArrayList<>();
+		
+		this.buttons.add(button_0);
+		this.buttons.add(button_1);
+		this.buttons.add(button_2);
+		this.buttons.add(button_3);
+		this.buttons.add(button_4);
+		this.buttons.add(button_5);
+		this.buttons.add(button_6);
+		this.buttons.add(button_7);
+		this.buttons.add(button_8);
+		this.buttons.add(button_9);
+		this.buttons.add(button_10);
+		this.buttons.add(button_11);
+		this.buttons.add(button_12);
+		this.buttons.add(button_13);
+		this.buttons.add(button_14);
+		this.buttons.add(button_15);
+		this.buttons.add(button_16);
+		this.buttons.add(button_17);
+		this.buttons.add(button_18);
+		this.buttons.add(button_19);
+		this.buttons.add(button_20);
+		this.buttons.add(button_21);
+		this.buttons.add(button_22);
+		this.buttons.add(button_23);
+		
+		for(JButton btn : buttons)
+			btn.setEnabled(false);
 	}
 	
 	public void showMessage(String message)
@@ -40,6 +96,16 @@ public class GameWindow extends JFrame {
 	public void showMessageBox(String message)
 	{
 		JOptionPane.showMessageDialog(null, message);
+	}
+	
+	public void onCartelaReceived(Cartela cartela)
+	{
+		JOptionPane.showMessageDialog(null, cartela.toString());
+		
+		for(int i = 0; i < 24; i++)
+		{
+			
+		}
 	}
 
 	/**

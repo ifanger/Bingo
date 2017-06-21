@@ -6,6 +6,7 @@ import java.util.Scanner;
 import gui.GameWindow;
 import gui.LoginWindow;
 import gui.RegisterWindow;
+import protocol.Cartela;
 import protocol.GFProtocol;
 import protocol.Player;
 import protocol.Ranking;
@@ -86,6 +87,7 @@ public class LoginListener extends Thread {
 						}
 						break;
 					case GFProtocol.PacketType.CARTELA:
+						Cartela cartela = GFProtocol.getCartela(receivedPacket);
 						break;
 					default: // Pacote desconhecido
 						if(receivedPacket.startsWith("NUF/") && receivedPacket.length() > 4)
