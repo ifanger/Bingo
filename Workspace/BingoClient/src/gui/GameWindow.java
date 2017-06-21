@@ -9,6 +9,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 
 import protocol.Cartela;
 import utils.Connection;
@@ -17,6 +18,7 @@ import java.awt.Font;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 public class GameWindow extends JFrame {
@@ -47,6 +49,7 @@ public class GameWindow extends JFrame {
 	private JButton button_21;
 	private JButton button_22;
 	private JButton button_23;
+	private JButton btnBingo;
 	private ArrayList<JButton> buttons;
 	
 	/**
@@ -85,7 +88,13 @@ public class GameWindow extends JFrame {
 		this.buttons.add(button_23);
 		
 		for(JButton btn : buttons)
+		{
+			btn.setText("-");
 			btn.setEnabled(false);
+			btn.setBackground(Color.WHITE);
+		}
+		
+		btnBingo.setEnabled(false);
 	}
 	
 	public void showMessage(String message)
@@ -100,11 +109,28 @@ public class GameWindow extends JFrame {
 	
 	public void onCartelaReceived(Cartela cartela)
 	{
-		JOptionPane.showMessageDialog(null, cartela.toString());
-		
 		for(int i = 0; i < 24; i++)
 		{
-			
+			JButton btn = buttons.get(i);
+			btn.setText(cartela.getCartela().get(i) + "");
+			btn.setEnabled(true);
+			btn.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					if(btn.getBackground() == Color.WHITE)
+					{
+						btn.setBackground(Color.GRAY);
+						int n = 0;
+						for(JButton btn : buttons)
+							if((btn.getBackground() == Color.GRAY))
+								n++;
+						
+						if(n == 24)
+							btnBingo.setEnabled(true);
+					} else {
+						btn.setBackground(Color.WHITE);
+					}
+				}
+			});
 		}
 	}
 
@@ -115,6 +141,10 @@ public class GameWindow extends JFrame {
 		setTitle("Jogo do Bingo");
 		setBounds(100, 100, 390, 500);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JPanel contentPane = new JPanel();
+		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		setContentPane(contentPane);
+		contentPane.setLayout(null);
 		
 		JButton btnB = new JButton("B");
 		btnB.setEnabled(false);
@@ -140,80 +170,80 @@ public class GameWindow extends JFrame {
 		btnO.setEnabled(false);
 		btnO.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_0 = new JButton("0");
+		button_0 = new JButton("0");
 		button_0.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_1 = new JButton("0");
+		button_1 = new JButton("0");
 		button_1.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_2 = new JButton("0");
+		button_2 = new JButton("0");
 		button_2.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_3 = new JButton("0");
+		button_3 = new JButton("0");
 		button_3.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_4 = new JButton("0");
+		button_4 = new JButton("0");
 		button_4.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_5 = new JButton("0");
+		button_5 = new JButton("0");
 		button_5.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_6 = new JButton("0");
+		button_6 = new JButton("0");
 		button_6.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_7 = new JButton("0");
+		button_7 = new JButton("0");
 		button_7.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_8 = new JButton("0");
+		button_8 = new JButton("0");
 		button_8.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_9 = new JButton("0");
+		button_9 = new JButton("0");
 		button_9.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_10 = new JButton("0");
+		button_10 = new JButton("0");
 		button_10.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_11 = new JButton("0");
+		button_11 = new JButton("0");
 		button_11.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton btnBingo = new JButton("BINGO");
+		btnBingo = new JButton("BINGO");
 		btnBingo.setFont(new Font("Trebuchet MS", Font.BOLD, 10));
 		btnBingo.setForeground(Color.MAGENTA);
 		
-		JButton button_12 = new JButton("0");
+		button_12 = new JButton("0");
 		button_12.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_13 = new JButton("0");
+		button_13 = new JButton("0");
 		button_13.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_14 = new JButton("0");
+		button_14 = new JButton("0");
 		button_14.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_19 = new JButton("0");
+		button_19 = new JButton("0");
 		button_19.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_15 = new JButton("0");
+		button_15 = new JButton("0");
 		button_15.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_16 = new JButton("0");
+		button_16 = new JButton("0");
 		button_16.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_17 = new JButton("0");
+		button_17 = new JButton("0");
 		button_17.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_18 = new JButton("0");
+		button_18 = new JButton("0");
 		button_18.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_20 = new JButton("0");
+		button_20 = new JButton("0");
 		button_20.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_21 = new JButton("0");
+		button_21 = new JButton("0");
 		button_21.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_22 = new JButton("0");
+		button_22 = new JButton("0");
 		button_22.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
-		JButton button_23 = new JButton("0");
+		button_23 = new JButton("0");
 		button_23.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		lbMensagem = new JLabel("Aguardando servidor...");

@@ -1,8 +1,5 @@
 package threads;
 
-import java.io.IOException;
-import java.util.Scanner;
-
 import gui.GameWindow;
 import gui.LoginWindow;
 import gui.RegisterWindow;
@@ -88,6 +85,7 @@ public class LoginListener extends Thread {
 						break;
 					case GFProtocol.PacketType.CARTELA:
 						Cartela cartela = GFProtocol.getCartela(receivedPacket);
+						game.onCartelaReceived(cartela);
 						break;
 					default: // Pacote desconhecido
 						if(receivedPacket.startsWith("NUF/") && receivedPacket.length() > 4)

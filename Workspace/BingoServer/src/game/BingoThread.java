@@ -28,12 +28,14 @@ public class BingoThread extends Thread {
 		
 		while(game.isGameStarted())
 		{
-			// Aguarda 5 segundos
 			try {
 				Thread.sleep(1000 * Game.SORT_DELAY);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
+			
+			if(!game.isGameStarted())
+				return;
 			
 			int n = Cartela.getRandomNumber();
 			while(this.game.getDrawnNumbers().contains(n))

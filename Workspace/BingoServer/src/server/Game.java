@@ -30,7 +30,7 @@ public class Game extends Thread {
 	/**
 	 * Tempo da contagem regressiva em minutos.
 	 */
-	public static final int START_TIME		= 20;
+	public static final int START_TIME		= 35;
 	
 	/**
 	 * Tempo da contagem regressiva para iniciar o jogo. (em segundos)
@@ -40,12 +40,12 @@ public class Game extends Thread {
 	/**
 	 * Tamanho máximo de uma cartela.
 	 */
-	public static final int MAX_CART_SIZE	= 25;
+	public static final int MAX_CART_SIZE	= 24;
 	
 	/**
 	 * Tempo entre um jogo e outro (em segundos)
 	 */
-	public static final int DELAY_BTW_GAMES	= 300;
+	public static final int DELAY_BTW_GAMES	= 10;
 	
 	/**
 	 * Lista com todos os jogadores.
@@ -87,12 +87,13 @@ public class Game extends Thread {
 	 */
 	public void startCountDown()
 	{
+		this.currentCountDownTime = 0;
 		while(currentCountDownTime < START_TIME)
 		{
 			try {
 				Thread.sleep(1000 * COUNT_DOWN_TIME);
-				System.out.println("O jogo começa em " + (START_TIME - currentCountDownTime) + " minuto(s).");
-				broadcastPacket("M/O jogo começa em " + (START_TIME - currentCountDownTime) + " minuto(s).");
+				int rtime = (START_TIME - currentCountDownTime);
+				broadcastPacket("M/O jogo começa em " + rtime + " segundo" + ((rtime == 1) ? "" : "s") + ".");
 				currentCountDownTime++;
 			} catch (InterruptedException e) {
 				e.printStackTrace();
@@ -119,7 +120,7 @@ public class Game extends Thread {
 		BingoThread sortThread = new BingoThread(this);
 		sortThread.start();
 		
-		broadcastPacket("M/O jogo começou!");
+		broadcastPacket("M/O jogo começou, vamos começar o sorteio!");
 	}
 	
 	/**
@@ -127,11 +128,16 @@ public class Game extends Thread {
 	 */
 	public void end()
 	{
+		this.currentCountDownTime = START_TIME; // caso estivesse na contagem regressiva
 		this.started = false;
+		
 		broadcastPacket("M/O jogo terminou!");
+		System.out.println("Jogo terminado, recomeçando em " + DELAY_BTW_GAMES + " segundos.");
 		
 		try {
 			Thread.sleep(1000 * DELAY_BTW_GAMES);
+			System.out.println("Recomeçando...");
+			startCountDown();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -162,10 +168,9 @@ public class Game extends Thread {
 	 */
 	public void broadcastPacket(String packet)
 	{
-		System.out.println(playerList);
+		System.out.println(playerList + " => " + packet);
 		for(PlayerHandler player : playerList)
 		{
-			System.out.println("Broadcast enviado para: " + player.getName());
 			player.sendMessage(packet);
 		}
 	}
@@ -214,7 +219,7 @@ public class Game extends Thread {
 	 * Método chamado quando um jogador pede Bingo.
 	 * @param player Jogador que pediu bingo.
 	 */
-	public synchronized void onPlayerBingo(PlayerHandler player)
+	public void onPlayerBingo(PlayerHandler player)
 	{
 		int pNumbers = 0;
 		for(int n : player.getCartela().getCartela())
@@ -239,13 +244,23 @@ public class Game extends Thread {
 	
 	/**
 	 * Método chamado quando um jogador deixa o jogo.
-	 * @param player
+	 * @param player Jogador que saiu.
 	 */
 	public void onPlayerLeft(PlayerHandler player)
 	{
 		if(player == null)
 			System.out.println("Um jogador deixou o jogo.");
 		else
+		{
 			System.out.println(player.getName() + " deixou o jogo.");
+			this.playerList.remove(player);
+			
+			if(this.playerList.size() == 0)
+			{
+				System.out.println("Todos os jogadores saíram.");
+				// Encerra o jogo for falta de jogadores
+				this.end();
+			}
+		}
 	}
 }
