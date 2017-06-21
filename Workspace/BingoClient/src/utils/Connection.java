@@ -1,6 +1,9 @@
 package utils;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
@@ -8,7 +11,7 @@ import java.util.Scanner;
 public class Connection {
 	private Socket socket;
 	private PrintStream output;
-	private Scanner input;
+	private BufferedReader input;
 	private boolean connected;
 	
 	public Connection(Socket socket) {
@@ -20,14 +23,14 @@ public class Connection {
 			
 			try {
 				this.output = new PrintStream(socket.getOutputStream());
-				this.input = new Scanner(socket.getInputStream());
+				this.input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public void sendPacket(String packet)
+	public synchronized void sendPacket(String packet)
 	{
 		if(this.connected)
 		{
@@ -40,11 +43,11 @@ public class Connection {
 		return socket;
 	}
 
-	public PrintStream getOutput() {
+	public synchronized PrintStream getOutput() {
 		return output;
 	}
 
-	public Scanner getInput() {
+	public synchronized BufferedReader getInput() {
 		return input;
 	}
 
@@ -52,13 +55,18 @@ public class Connection {
 		return connected;
 	}
 
-	public void setConnected(boolean connected) {
+	public synchronized void setConnected(boolean connected) {
 		this.connected = connected;
 	}
 	
 	public void disconnect()
 	{
-		this.input.close();
+		try {
+			this.input.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 		this.output.close();
 		
 		try {

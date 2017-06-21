@@ -2,6 +2,7 @@ package gui;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.border.EmptyBorder;
 
 import com.google.gson.Gson;
@@ -27,8 +28,8 @@ public class RegisterWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
-	private JTextField txtSenha;
-	private JTextField txtConfirma;
+	private JPasswordField txtSenha;
+	private JPasswordField txtConfirma;
 	private JTextField txtEmail;
 	private JTextField txtNome;
 	private LoginWindow janelaLogin;
@@ -48,7 +49,7 @@ public class RegisterWindow extends JFrame {
 	 */
 	public void registerFailed()
 	{
-		JOptionPane.showMessageDialog(null, "Já existe um usuário cadastrado com esse nome!");
+		JOptionPane.showMessageDialog(null, "Já existe um usuário cadastrado com esse endereço de e-mail!");
 	}
 	
 	/**
@@ -63,9 +64,6 @@ public class RegisterWindow extends JFrame {
 	public RegisterWindow(LoginWindow janelaLogin, Connection connection) {
 		this.janelaLogin = janelaLogin;
 		this.connection = connection;
-		
-		RegisterListener rl = new RegisterListener(this.connection, this);
-		rl.start();
 		
 		setResizable(false);
 		setTitle("Cadastro de Jogadores");
@@ -99,7 +97,7 @@ public class RegisterWindow extends JFrame {
 		lblNewLabel_2.setBounds(58, 87, 95, 20);
 		panel.add(lblNewLabel_2);
 		
-		txtSenha = new JTextField();
+		txtSenha = new JPasswordField();
 		txtSenha.setBounds(158, 87, 196, 20);
 		panel.add(txtSenha);
 		txtSenha.setColumns(10);
@@ -109,7 +107,7 @@ public class RegisterWindow extends JFrame {
 		lblConfirmao.setBounds(31, 115, 122, 20);
 		panel.add(lblConfirmao);
 		
-		txtConfirma = new JTextField();
+		txtConfirma = new JPasswordField();
 		txtConfirma.setColumns(10);
 		txtConfirma.setBounds(158, 115, 196, 20);
 		panel.add(txtConfirma);
@@ -129,9 +127,6 @@ public class RegisterWindow extends JFrame {
 		JButton btnOK = new JButton("OK");
 		btnOK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				//thread.mandaPacote("");
-				
 				String nome = txtNome.getText();
 				String email = txtEmail.getText();
 				String senha = txtSenha.getText();
@@ -184,5 +179,8 @@ public class RegisterWindow extends JFrame {
 		btnCancelar.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		btnCancelar.setBounds(132, 162, 106, 35);
 		panel.add(btnCancelar);
+		
+		RegisterListener rl = new RegisterListener(this.connection, this);
+		rl.start();
 	}
 }

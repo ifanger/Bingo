@@ -114,15 +114,18 @@ public class LoginWindow {
 	public void onLogginSuccess(Player player)
 	{
 		openGame();
+		listener.stopThread();
 	}
 	
 	public void openGame()
 	{
+		GameWindow gameWindow = new GameWindow();
 		
 	}
 	
 	public void openRegister()
 	{
+		this.listener.stopThread();
 		RegisterWindow registerWindow = new RegisterWindow(this, this.connection);
 		registerWindow.setVisible(true);
 		registerWindow.setLocationRelativeTo(null);
@@ -290,6 +293,8 @@ public class LoginWindow {
 			} else {
 				this.connection.setConnected(false);
 			}
+			
+			this.listener.start();
 		}
 		
 	}

@@ -1,6 +1,6 @@
 package threads;
 
-import java.util.Scanner;
+import java.io.IOException;
 
 import gui.RegisterWindow;
 import protocol.GFProtocol;
@@ -11,6 +11,9 @@ public class RegisterListener extends Thread {
 	private RegisterWindow register;
 	private boolean running = true;
 	
+	/**
+	 * @wbp.parser.entryPoint
+	 */
 	public RegisterListener(Connection connection, RegisterWindow register)
 	{
 		this.connection = connection;
@@ -20,29 +23,30 @@ public class RegisterListener extends Thread {
 	@Override
 	public void run()
 	{
-		while(this.running)
+		String receivedPacket = "";
+		try {
+			receivedPacket = connection.getInput().readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		while(running && !receivedPacket.isEmpty())
 		{
-			Scanner scanner = connection.getInput();
-			
-			if(scanner.hasNextLine())
-			{
-				String receivedPacket = scanner.nextLine();
-				int packetType = GFProtocol.getPacketType(receivedPacket);
-				
-				switch(packetType)
-				{
-					case GFProtocol.PacketType.REGISTER_F:
-						boolean result = GFProtocol.isRegistred(receivedPacket);
-						if(result)
-						{
-							register.registerSuccess();
-							stopThread();
-						}
-						else
-							register.registerFailed();
-						break;
-				}
+			try {
+				receivedPacket = connection.getInput().readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+			
+			boolean result = receivedPacket.equals("NUF/T");
+			
+			if(result)
+				register.registerSuccess();
+			else
+				register.registerFailed();
+					
 		}
 	}
 	

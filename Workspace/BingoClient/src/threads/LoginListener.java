@@ -1,5 +1,6 @@
 package threads;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 import gui.LoginWindow;
@@ -23,51 +24,78 @@ public class LoginListener extends Thread {
 
 	@Override
 	public void run() {
-		while(this.running)
+		String receivedPacket = "";
+		
+		try {
+			receivedPacket = this.connection.getInput().readLine();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		while(running && !receivedPacket.isEmpty())
 		{
-			Scanner scanner = this.connection.getInput();
+			try {
+				receivedPacket = this.connection.getInput().readLine();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
-			if(scanner.hasNextLine())
+			int packetType = GFProtocol.getPacketType(receivedPacket);
+			switch(packetType)
 			{
-				String receivedPacket = scanner.nextLine();
-				int packetType = GFProtocol.getPacketType(receivedPacket);
-				
-				switch(packetType)
-				{
-					case GFProtocol.PacketType.LOGIN_F:
-						Player receivedPlayer = GFProtocol.isLoggedIn(receivedPacket);
-						if(receivedPlayer == null)
-							login.onLoginFailed();
-						else
-						{
-							login.onLogginSuccess(receivedPlayer);
-							stopThread();
-						}
+				case GFProtocol.PacketType.LOGIN_F:
+					Player receivedPlayer = GFProtocol.isLoggedIn(receivedPacket);
+					if(receivedPlayer == null)
+						login.onLoginFailed();
+					else
+					{
+						login.onLogginSuccess(receivedPlayer);
+						stopThread();
+					}
+					break;
+				case GFProtocol.PacketType.RANKING:
+					System.out.println(receivedPacket);
+					Ranking ranking = GFProtocol.getRanking(receivedPacket);
+					
+					if(ranking == null)
 						break;
-					case GFProtocol.PacketType.RANKING:
-						System.out.println(receivedPacket);
-						Ranking ranking = GFProtocol.getRanking(receivedPacket);
-						
-						Player player1 = ranking.getFirstPlayer();
-						Player player2 = ranking.getSecondPlayer();
-						Player player3 = ranking.getThirdPlayer();
-						
+					
+					Player player1 = ranking.getFirstPlayer();
+					Player player2 = ranking.getSecondPlayer();
+					Player player3 = ranking.getThirdPlayer();
+					
+					if(player1 != null)
+					{
 						this.login.getLblJogador1().setText(player1.getName());
-						this.login.getLblJogador2().setText(player2.getName());
-						this.login.getLblJogador3().setText(player3.getName());
 						this.login.getLblVitoria1().setText(player1.getWinsCount() + "");
+					}
+					
+					if(player2 != null)
+					{
+						this.login.getLblJogador2().setText(player2.getName());
 						this.login.getLblVitoria2().setText(player2.getWinsCount() + "");
+					}
+					
+					if(player3 != null)
+					{
+						this.login.getLblJogador3().setText(player3.getName());
 						this.login.getLblVitoria3().setText(player3.getWinsCount() + "");
-					default: // Pacote desconhecido
-						System.out.println("Pacote desconhecido recebido: " + receivedPacket);
-						break;
-				}
+					}
+					
+					break;
+				default: // Pacote desconhecido
+					System.out.println("Pacote desconhecido recebido: " + receivedPacket);
+					stopThread();
+					break;
 			}
 		}
 	}
 	
-	private void stopThread()
+	public void stopThread()
 	{
+		System.out.println("LoginListener stopped.");
 		this.running = false;
 	}
 	
