@@ -125,7 +125,7 @@ public class ClientThread extends Thread {
 				}
 			}
 		} catch(Exception e) {
-			System.out.println("Conexão perdida com um dos clientes.");
+			//System.out.println("Conexão perdida com um dos clientes.");
 			this.disconnectPlayer();
 		}
 	}

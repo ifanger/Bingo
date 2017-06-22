@@ -33,13 +33,6 @@ public class ServerThread extends Thread {
 		this.startServer();
 		
 		Game game = new Game(this);
-		Ranking ranking = null;
-		try {
-			ranking = Players.getRanking();
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
 		System.out.println("Aguardando conexões.");
 		game.start();
 		// Executa operações enquanto o servidor estiver vivo
@@ -70,7 +63,7 @@ public class ServerThread extends Thread {
 				SocketHandler handler = new SocketHandler(clientSocket);
 				
 				Thread clientThread =
-						new ClientThread(clientSocket, this.clientList, handler, game, ranking);
+						new ClientThread(clientSocket, this.clientList, handler, game, null);
 				
 				// Adiciona o cliente na lista de clientes
 				this.addClient((ClientThread) clientThread);

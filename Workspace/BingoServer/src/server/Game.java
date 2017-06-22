@@ -74,6 +74,11 @@ public class Game extends Thread {
 	private Player bingo = null;
 	
 	/**
+	 * Armazena se o servidor está encerrando as atividades.
+	 */
+	private boolean ending = false;
+	
+	/**
 	 * Construtor padrão. Requer a Thread do server, para comunicação.
 	 * @param server Server Thread.
 	 */
@@ -93,6 +98,7 @@ public class Game extends Thread {
 	 */
 	public void startCountDown()
 	{
+		this.ending = false;
 		this.currentCountDownTime = 0;
 		while(currentCountDownTime < START_TIME)
 		{
@@ -141,6 +147,10 @@ public class Game extends Thread {
 	 */
 	public void end()
 	{
+		if(this.ending)
+			return;
+		
+		this.ending = true;
 		this.currentCountDownTime = START_TIME; // caso estivesse na contagem regressiva
 		this.started = false;
 		this.bingo = null;
@@ -182,7 +192,6 @@ public class Game extends Thread {
 	 */
 	public void broadcastPacket(String packet)
 	{
-		System.out.println(playerList + " => " + packet);
 		for(PlayerHandler player : playerList)
 		{
 			player.sendMessage(packet);
