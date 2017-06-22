@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import protocol.GFProtocol;
 import protocol.GFSecurity;
 import protocol.Player;
-import threads.Cliente;
 import utils.Connection;
 import utils.EmailUtils;
 

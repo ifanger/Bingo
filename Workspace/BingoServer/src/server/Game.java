@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.google.gson.Gson;
 
+import daos.Players;
 import game.BingoThread;
 import game.PlayerHandler;
 import protocol.Cartela;
@@ -30,7 +31,7 @@ public class Game extends Thread {
 	/**
 	 * Tempo da contagem regressiva em minutos.
 	 */
-	public static final int START_TIME		= 35;
+	public static final int START_TIME		= 60;
 	
 	/**
 	 * Tempo da contagem regressiva para iniciar o jogo. (em segundos)
@@ -66,6 +67,11 @@ public class Game extends Thread {
 	 * Armazena os números sorteados.
 	 */
 	private ArrayList<Integer> drawnNumbers = new ArrayList<Integer>();
+	
+	/**
+	 * Verifica se alguém já pediu bingo.
+	 */
+	private Player bingo = null;
 	
 	/**
 	 * Construtor padrão. Requer a Thread do server, para comunicação.
@@ -127,7 +133,7 @@ public class Game extends Thread {
 		BingoThread sortThread = new BingoThread(this);
 		sortThread.start();
 		
-		broadcastPacket("M/O jogo começou, vamos começar o sorteio!");
+		broadcastPacket("M/Começando sorteio...");
 	}
 	
 	/**
@@ -137,6 +143,7 @@ public class Game extends Thread {
 	{
 		this.currentCountDownTime = START_TIME; // caso estivesse na contagem regressiva
 		this.started = false;
+		this.bingo = null;
 		
 		broadcastPacket("M/O jogo terminou!");
 		System.out.println("Jogo terminado, recomeçando em " + DELAY_BTW_GAMES + " segundos.");
@@ -245,10 +252,33 @@ public class Game extends Thread {
 	 */
 	public void onPlayerWon(PlayerHandler player)
 	{
-		String playerString = new Gson().toJson((Player) player);
+		if(player == null)
+			return;
 		
+		if(this.bingo != null)
+		{
+			player.sendMessage("MB/" + this.bingo + " já pediu BINGO!");
+			return;
+		}
+		
+		this.bingo = player;
+		String playerString = "";
+		
+		try {
+			playerString = new Gson().toJson(bingo, Player.class);
+			System.out.println(playerString);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			Players.addWinCount(player);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		this.broadcastPacket(String.format(GFProtocol.END_GAME, playerString));
-		this.broadcastPacket("MB/O jogador " + player.getName() + " fez BINGO!");
+		this.broadcastPacket("MB/O jogador " + player.getName() + " pediu BINGO!");
 		this.end();
 	}
 	

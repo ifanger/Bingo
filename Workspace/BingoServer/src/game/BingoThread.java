@@ -54,8 +54,14 @@ public class BingoThread extends Thread {
 			this.numbersToSort.remove(0);
 		}
 		
-		game.broadcastPacket("MB/Todos os números foram sorteados, mas ninguém pediu bingo!");
-		game.end();
+		try {
+			Thread.sleep(1000 * 20);
+			game.broadcastPacket("MB/Todos os números foram sorteados, mas ninguém pediu bingo!");
+			game.end();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }

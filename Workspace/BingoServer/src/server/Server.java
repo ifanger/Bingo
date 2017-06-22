@@ -3,6 +3,7 @@ package server;
 import com.google.gson.Gson;
 
 import protocol.Cartela;
+import protocol.Player;
 import threads.KeyboardThread;
 import threads.ServerThread;
 

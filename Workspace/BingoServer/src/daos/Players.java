@@ -172,4 +172,25 @@ public class Players {
 		
 		return ranking;
 	}
+	
+	public static void addWinCount(Player player) throws Exception
+	{
+		if(player == null)
+			throw new Exception("Falha ao falha ao adicionar vitória ao jogador.");
+		
+		try
+		{
+			String sqlQuery = "UPDATE players SET monthlyWins = ? WHERE email = ?";
+			
+			DB.command.prepareStatement(sqlQuery);
+			DB.command.setInt(1, player.getWinsCount() + 1);
+			DB.command.setString(2, player.getEmail());
+			DB.command.executeUpdate();
+			DB.command.commit();
+		} catch(SQLException e)
+		{
+			e.printStackTrace();
+			throw new Exception("Falha ao somar vitória.");
+		}
+	}
 }
