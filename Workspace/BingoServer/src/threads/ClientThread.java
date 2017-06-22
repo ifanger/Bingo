@@ -56,10 +56,13 @@ public class ClientThread extends Thread {
 			while(this.socket.isConnected() && (receivedPacket = this.input.readLine()) != null)
 			{
 				int packetType = GFProtocol.getPacketType(receivedPacket);
-				System.out.println("Recebido: " + receivedPacket);
+				//System.out.println("Recebido: " + receivedPacket);
 				
 				if(packetType == GFProtocol.PacketType.RANKING)
 				{
+					try {
+						ranking = Players.getRanking();
+					} catch(Exception e) {}
 					this.handler.sendMessage(String.format(GFProtocol.RANKING_INFORMATION, gson.toJson(ranking)));
 				} else if(packetType == GFProtocol.PacketType.LOGIN)
 				{
@@ -138,7 +141,7 @@ public class ClientThread extends Thread {
 
 	public void sendPacket(String packet)
 	{
-		System.out.println("Enviado: " + packet);
+		//System.out.println("Enviado: " + packet);
 		this.handler.sendMessage(packet);
 	}
 	

@@ -190,5 +190,22 @@ public class GFProtocol {
 		
 		return cartela;
 	}
+	
+	public static Player getWinner(String packet)
+	{
+		String data = packet.substring(3);
+		Player player = null;
+		
+		if(getPacketType(packet) == PacketType.END_GAME)
+		{
+			try
+			{
+				player = gson().fromJson(data, Player.class);
+			} catch(Exception e)
+			{}
+		}
+		
+		return player;
+	}
 
 }

@@ -262,6 +262,7 @@ public class Game extends Thread {
 		}
 		
 		this.bingo = player;
+		this.bingo.setPassword(null);
 		String playerString = "";
 		
 		try {
@@ -278,7 +279,7 @@ public class Game extends Thread {
 			e.printStackTrace();
 		}
 		this.broadcastPacket(String.format(GFProtocol.END_GAME, playerString));
-		this.broadcastPacket("MB/O jogador " + player.getName() + " pediu BINGO!");
+		this.broadcastPacket("MB/" + player.getName() + " GANHOU O JOGO!!!!!");
 		this.end();
 	}
 	

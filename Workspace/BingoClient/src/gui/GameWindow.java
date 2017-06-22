@@ -113,6 +113,16 @@ public class GameWindow extends JFrame {
 		JOptionPane.showMessageDialog(null, message);
 	}
 	
+	public ArrayList<JButton> getButtons()
+	{
+		return this.buttons;
+	}
+	
+	public JButton getBingoButton()
+	{
+		return this.btnBingo;
+	}
+	
 	public void onCartelaReceived(Cartela cartela)
 	{
 		for(int i = 0; i < 24; i++)

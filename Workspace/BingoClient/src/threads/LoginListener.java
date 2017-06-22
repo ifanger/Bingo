@@ -1,5 +1,9 @@
 package threads;
 
+import java.awt.Color;
+
+import javax.swing.JButton;
+
 import gui.GameWindow;
 import gui.LoginWindow;
 import gui.RegisterWindow;
@@ -34,8 +38,6 @@ public class LoginListener extends Thread {
 			
 			while(running && (receivedPacket = this.connection.getInput().readLine()) != null)
 			{
-				System.out.println("Recebido: " + receivedPacket);
-				
 				int packetType = GFProtocol.getPacketType(receivedPacket);
 				switch(packetType)
 				{
@@ -102,6 +104,23 @@ public class LoginListener extends Thread {
 						
 						if(receivedPacket.startsWith("MB/") && receivedPacket.length() > 3)
 							game.showMessageBox(receivedPacket.substring(3));
+						
+						if(receivedPacket.startsWith("EG/") && receivedPacket.length() > 3)
+						{
+							Player p = GFProtocol.getWinner(receivedPacket);
+							for(JButton btn : this.game.getButtons())
+								if(btn != null)
+								{
+									btn.setBackground(Color.WHITE);
+									btn.setText("0");
+									btn.setEnabled(true);
+								}
+							
+							if(this.game.getBingoButton() != null)
+								this.game.getBingoButton().setEnabled(false);
+							
+							this.game.showMessage(p.getName() + " ganhou o jogo!");
+						}
 						
 						break;
 				}
