@@ -7,7 +7,15 @@ import protocol.Player;
 import threads.KeyboardThread;
 import threads.ServerThread;
 
+/**
+ * Classe principal da aplicação.
+ * @author Gustavo Ifanger
+ *
+ */
 public class Server {
+	/**
+	 * Porta na qual o servidor será executado.
+	 */
 	private static final int LISTEN_PORT	= 8090;
 	
 	public static void main(String args[])

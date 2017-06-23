@@ -1,14 +1,34 @@
 package protocol;
 
+/**
+ * Representa o Ranking de jogadores.
+ * @author Gustavo Ifanger
+ *
+ */
 public class Ranking {
+	/**
+	 * Primeiro colocado no Ranking.
+	 */
 	private Player firstPlayer;
+	
+	/**
+	 * Segundo colocado no Ranking.
+	 */
 	private Player secondPlayer;
+	
+	/**
+	 * Terceiro colocado no Ranking.
+	 */
 	private Player thirdPlayer;
 	
+	/**
+	 * Construtor padrão da classe.
+	 * @param p1 Primeiro colocado do Ranking. (pode ser null)
+	 * @param p2 Segundo colocado do Ranking. (pode ser null)
+	 * @param p3 Terceiro colocado do Ranking. (pode ser null)
+	 */
 	public Ranking(Player p1, Player p2, Player p3)
 	{
-		// Remove a senha e email dos jogadores para não enviar aos clientes
-		
 		if(p1 != null)
 		{
 			p1.setPassword(null);
@@ -32,18 +52,33 @@ public class Ranking {
 		this.thirdPlayer = p3;
 	}
 	
+	/**
+	 * Retorna o primeiro colocado.
+	 * @return Objeto do tipo Player que representa o primeiro colocado.
+	 */
 	public Player getFirstPlayer() {
 		return firstPlayer;
 	}
-	
+
+	/**
+	 * Retorna o segundo colocado.
+	 * @return Objeto do tipo Player que representa o segundo colocado.
+	 */
 	public Player getSecondPlayer() {
 		return secondPlayer;
 	}
 	
+	/**
+	 * Retorna o terceiro colocado.
+	 * @return Objeto do tipo Player que representa o terceiro colocado.
+	 */
 	public Player getThirdPlayer() {
 		return thirdPlayer;
 	}
 
+	/**
+	 * Obtem o HashCode do Ranking.
+	 */
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -54,6 +89,9 @@ public class Ranking {
 		return result;
 	}
 
+	/**
+	 * Compara dois Rankings.
+	 */
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -81,6 +119,9 @@ public class Ranking {
 		return true;
 	}
 
+	/**
+	 * Converte o Ranking para String.
+	 */
 	@Override
 	public String toString() {
 		return "Ranking [firstPlayer=" + firstPlayer + ", secondPlayer=" + secondPlayer + ", thirdPlayer=" + thirdPlayer

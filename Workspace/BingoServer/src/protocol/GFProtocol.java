@@ -2,6 +2,12 @@ package protocol;
 
 import com.google.gson.Gson;
 
+
+/**
+ * Protocólo para comunicação entre cliente e servidor.
+ * @author Gustavo Ifanger
+ *
+ */
 public class GFProtocol {
 
 	public static final String RANKING_INFORMATION		= "RI/%s";
@@ -18,6 +24,12 @@ public class GFProtocol {
 	public static final String END_GAME					= "EG/%s";
 	public static final String KICK						= "KS/";
 	
+	/**
+	 * Classe responsável apenas para armazenamento de inteiros
+	 * para melhor leitura de código.
+	 * @author Gustavo Ifanger
+	 *
+	 */
 	public static class PacketType {
 		public static final int NONE			= 0;
 		public static final int RANKING			= 1;
@@ -35,6 +47,11 @@ public class GFProtocol {
 		public static final int KICK			= 13;
 	}
 	
+	/**
+	 * Esse método é responsável por interpretar um pacote e saber qual o seu tipo.
+	 * @param packet Pacote recebido.
+	 * @return Inteiro que representa o tipo do pacote.
+	 */
 	public static int getPacketType(String packet)
 	{
 		int packetLen = packet.length();
@@ -81,11 +98,21 @@ public class GFProtocol {
 		return PacketType.NONE;
 	}
 	
+	/**
+	 * Cria uma nova instância da classe Gson.
+	 * Apenas para melhor legibilidade.
+	 * @return Novo objeto Gson.
+	 */
 	private static Gson gson()
 	{
 		return new Gson();
 	}
 	
+	/**
+	 * Retorna um objeto do tipo Ranking a partir de um pacote.
+	 * @param packet Pacote.
+	 * @return Ranking ou null caso a operação falhe.
+	 */
 	public static Ranking getRanking(String packet)
 	{
 		String data = packet.substring(3);
@@ -103,6 +130,11 @@ public class GFProtocol {
 		return ranking;
 	}
 	
+	/**
+	 * Obtem um objeto do tipo Player por meio de um pacote.
+	 * @param packet Pacote de login.
+	 * @return Player ou null caso o pacote seja inválido.
+	 */
 	public static Player getPlayerFromLoginPacket(String packet)
 	{
 		String data = packet.substring(2);
@@ -120,6 +152,11 @@ public class GFProtocol {
 		return player;
 	}
 	
+	/**
+	 * Obtem um jogador através do pacote de registro.
+	 * @param packet Pacote de registro.
+	 * @return Objeto do tipo Player a ser registrado. (caso seja null, o registro falhou)
+	 */
 	public static Player getPlayerFromRegisterPacket(String packet)
 	{
 		String data = packet.substring(3);

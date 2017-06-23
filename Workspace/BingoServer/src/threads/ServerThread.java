@@ -10,6 +10,11 @@ import protocol.Ranking;
 import server.Game;
 import server.SocketHandler;
 
+/**
+ * Thread responsável pela execução do servidor.
+ * @author Gustavo Ifanger
+ *
+ */
 public class ServerThread extends Thread {
 	
 	protected int 						serverPort		= 8090;
@@ -18,6 +23,10 @@ public class ServerThread extends Thread {
 	protected Thread					runningThread	= null;
 	protected ArrayList<ClientThread>	clientList		= null;
 	
+	/**
+	 * Construtor padrão.
+	 * @param port Porta de execução do servidor.
+	 */
 	public ServerThread(int port) {
 		this.serverPort = port;
 		this.clientList = new ArrayList<ClientThread>();
@@ -74,11 +83,18 @@ public class ServerThread extends Thread {
 		System.out.println("Servidor parou.");
 	}
 	
+	/**
+	 * Verifica se o servidor parou.
+	 * @return Estado do servidor.
+	 */
 	private synchronized boolean isStopped()
 	{
 		return this.serverStopped;
 	}
 	
+	/**
+	 * Para o servidor.
+	 */
 	public synchronized void stopServer()
 	{
 		this.serverStopped = true;
@@ -92,6 +108,9 @@ public class ServerThread extends Thread {
 		}
 	}
 	
+	/**
+	 * Inicia o servidor.
+	 */
 	private void startServer()
 	{
 		try
@@ -104,6 +123,10 @@ public class ServerThread extends Thread {
 		}
 	}
 	
+	/**
+	 * Adiciona um novo cliente à lista.
+	 * @param client Cliente à ser adicionado.
+	 */
 	private synchronized void addClient(ClientThread client)
 	{
 		this.clientList.add(client);

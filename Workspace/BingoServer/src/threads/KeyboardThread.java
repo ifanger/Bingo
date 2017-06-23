@@ -6,9 +6,12 @@ import java.io.InputStreamReader;
 import daos.Players;
 import protocol.Ranking;
 
+/**
+ * Thread responsável pela leitura do teclado.
+ * @author Gustavo Ifanger
+ *
+ */
 public class KeyboardThread extends Thread {
-	
-
 	@Override
 	public void run() {
 		BufferedReader kBoard = new BufferedReader(new InputStreamReader(System.in));

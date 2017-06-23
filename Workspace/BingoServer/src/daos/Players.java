@@ -47,7 +47,6 @@ public class Players {
 	/**
 	 * Cadastra um novo jogador no banco de dados.
 	 * @param player Jogador a ser cadastrado.
-	 * @param password Senha do jogador já com a criptografia.
 	 * @throws Exception Caso a senha não esteja criptografada ou já exista um usuário com o mesmo e-mail.
 	 */
 	public static void register(Player player) throws Exception
@@ -173,6 +172,11 @@ public class Players {
 		return ranking;
 	}
 	
+	/**
+	 * Adiciona um ponto para o jogador no banco de dados.
+	 * @param player Jogador a ser adicionado o ponto no banco de dados.
+	 * @throws Exception Caso o jogador seja inválido.
+	 */
 	public static void addWinCount(Player player) throws Exception
 	{
 		if(player == null)

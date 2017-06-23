@@ -19,6 +19,11 @@ import protocol.Ranking;
 import server.Game;
 import server.SocketHandler;
 
+/**
+ * Classe responsável pelo gerenciamento de um único cliente.
+ * @author Gustavo Ifanger.
+ *
+ */
 public class ClientThread extends Thread {
 	protected Socket 					socket 			= null;
 	protected ArrayList<ClientThread>	clientList		= null;
@@ -30,6 +35,14 @@ public class ClientThread extends Thread {
 	protected boolean					connected		= false;
 	protected Ranking					ranking			= null;
 	
+	/**
+	 * Construtor padrão.
+	 * @param socket Socket do cliente.
+	 * @param clientList Lista de clientes.
+	 * @param handler Manuseador do Socket.
+	 * @param game Instância do jogo.
+	 * @param ranking Último ranking gerado pelo servidor.
+	 */
 	public ClientThread(Socket socket, ArrayList<ClientThread> clientList, SocketHandler handler, Game game, Ranking ranking)
 	{
 		this.socket		= socket;
@@ -56,8 +69,6 @@ public class ClientThread extends Thread {
 			while(this.socket.isConnected() && (receivedPacket = this.input.readLine()) != null)
 			{
 				int packetType = GFProtocol.getPacketType(receivedPacket);
-				//System.out.println("Recebido: " + receivedPacket);
-				
 				if(packetType == GFProtocol.PacketType.RANKING)
 				{
 					try {
@@ -125,11 +136,13 @@ public class ClientThread extends Thread {
 				}
 			}
 		} catch(Exception e) {
-			//System.out.println("Conexão perdida com um dos clientes.");
 			this.disconnectPlayer();
 		}
 	}
 	
+	/**
+	 * Desconecta um jogador.
+	 */
 	public void disconnectPlayer()
 	{
 		if(socket == null || input == null)
@@ -139,12 +152,18 @@ public class ClientThread extends Thread {
 		this.game.onPlayerLeft(player);
 	}
 
+	/**
+	 * Envia pacote ao cliente.
+	 * @param packet Pacote a ser enviado.
+	 */
 	public void sendPacket(String packet)
 	{
-		//System.out.println("Enviado: " + packet);
 		this.handler.sendMessage(packet);
 	}
 	
+	/**
+	 * Encerra conexão com o cliente.
+	 */
 	public void disconnect()
 	{
 		this.sendPacket(GFProtocol.KICK);

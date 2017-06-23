@@ -4,11 +4,20 @@ import java.io.IOException;
 import java.io.PrintStream;
 import java.net.Socket;
 
+/**
+ * Classe responsável pelo manuseio do Socket.
+ * @author Gustavo Ifanger
+ *
+ */
 public class SocketHandler {
 	
 	protected Socket		socket		= null;
 	protected PrintStream	printStream	= null;
 	
+	/**
+	 * Construtor padrão.
+	 * @param socket Socket a ser manuseado.
+	 */
 	public SocketHandler(Socket socket)
 	{
 		if(socket == null)
@@ -25,6 +34,10 @@ public class SocketHandler {
 		{ e.printStackTrace(); }
 	}
 	
+	/**
+	 * Envia mensagem através do socket.
+	 * @param message Mensagem a ser enviada.
+	 */
 	public void sendMessage(String message)
 	{
 		if(!this.socket.isConnected())
@@ -43,6 +56,9 @@ public class SocketHandler {
 		 this.printStream.flush();
 	}
 	
+	/**
+	 * Encerra o envio de dados.
+	 */
 	public void disconnect()
 	{
 		this.printStream.close();
