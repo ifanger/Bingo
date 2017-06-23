@@ -13,13 +13,44 @@ import protocol.Player;
 import protocol.Ranking;
 import utils.Connection;
 
+/**
+ * Thread responsável pela leitura de pacotes recebidos pelo servidor.
+ * @author Gustavo Ifanger
+ *
+ */
 public class LoginListener extends Thread {
+	/**
+	 * Armazena a instância da janela de login.
+	 */
 	private LoginWindow login;
+	
+	/**
+	 * Armazena a instância da janela de registro.
+	 */
 	private RegisterWindow register;
+	
+	/**
+	 * Armazena a instância da janela de jogo.
+	 */
 	private GameWindow game;
+	
+	/**
+	 * Armazena a conexão com o servidor.
+	 */
 	private Connection connection;
+	
+	/**
+	 * Determina se a thread deve continuar executando ou não.
+	 */
 	private boolean running = true;
 	
+	/**
+	 * Construtor padrão da classe.
+	 * @param parent Janela de login.
+	 * @param register Janela de registro.
+	 * @param game Janela de jogo.
+	 * @param connection Conexão com o servidor.
+	 */
 	public LoginListener(LoginWindow parent, RegisterWindow register, GameWindow game, Connection connection)
 	{
 		this.login = parent;
@@ -30,6 +61,9 @@ public class LoginListener extends Thread {
 		this.connection.sendPacket(GFProtocol.RANKING_INFORMATION);
 	}
 
+	/**
+	 * Método de execução de thread.
+	 */
 	@Override
 	public void run() {
 		try
@@ -130,6 +164,9 @@ public class LoginListener extends Thread {
 		}
 	}
 	
+	/**
+	 * Método responsável por parar a thread.
+	 */
 	public void stopThread()
 	{
 		System.out.println("LoginListener stopped.");

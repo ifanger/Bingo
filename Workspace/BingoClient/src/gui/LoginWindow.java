@@ -25,6 +25,11 @@ import java.io.IOException;
 import java.net.Socket;
 import java.awt.event.ActionEvent;
 
+/**
+ * Formulário de Login
+ * @author Gustavo Ifanger
+ *
+ */
 public class LoginWindow {
 	private Connection connection;
 	private LoginListener listener;
@@ -73,6 +78,9 @@ public class LoginWindow {
 		return this.connection;
 	}
 	
+	/**
+	 * Método chamado ao clicar no botão de login.
+	 */
 	public void login()
 	{
 		if(this.connection == null || !this.connection.isConnected())
@@ -106,16 +114,26 @@ public class LoginWindow {
 						));
 	}
 	
+	/**
+	 * Método chamado quando o login falha.
+	 */
 	public void onLoginFailed()
 	{
 		showMessage("Usuário ou senha incorretos.");
 	}
 	
+	/**
+	 * Método chamado quando o login é bem sucedido.
+	 * @param player Instância de Player recebida do servidor.
+	 */
 	public void onLogginSuccess(Player player)
 	{
 		openGame();
 	}
 	
+	/**
+	 * Abre a janela de jogo.
+	 */
 	public void openGame()
 	{
 		game.setVisible(true);
@@ -123,6 +141,9 @@ public class LoginWindow {
 		frmBingoClient.setVisible(false);
 	}
 	
+	/**
+	 * Abre a janela de registro.
+	 */
 	public void openRegister()
 	{
 		register.setVisible(true);
@@ -130,6 +151,10 @@ public class LoginWindow {
 		frmBingoClient.setVisible(false);
 	}
 	
+	/**
+	 * Exibe uma mensagem na label.
+	 * @param text Mensagem a ser exibida.
+	 */
 	public void showMessage(String text)
 	{
 		lbMensagem.setText(text);

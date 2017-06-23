@@ -8,10 +8,30 @@ import java.io.PrintStream;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * Classe responsável por armazenar grande parte das variáveis de conexão.
+ * @author Gustavo Ifanger
+ *
+ */
 public class Connection {
+	/**
+	 * Socket de conexão com o servidor.
+	 */
 	private Socket socket;
+	
+	/**
+	 * Stream para envio de pacotes.
+	 */
 	private PrintStream output;
+	
+	/**
+	 * Buffer para leitura de dados.
+	 */
 	private BufferedReader input;
+	
+	/**
+	 * Armazena o estado atual da conexão.
+	 */
 	private boolean connected;
 	
 	public Connection(Socket socket) {
@@ -30,6 +50,10 @@ public class Connection {
 		}
 	}
 
+	/**
+	 * Envia um pacote para o servidor.
+	 * @param packet Pacote a ser enviado.
+	 */
 	public synchronized void sendPacket(String packet)
 	{
 		if(this.connected)
@@ -39,26 +63,49 @@ public class Connection {
 		}
 	}
 
+	/**
+	 * Retorna o socket da conexão.
+	 * @return Socket conectado ao servidor.
+	 */
 	public Socket getSocket() {
 		return socket;
 	}
 
+	/**
+	 * Retorna a stream para comunicação com o servidor.
+	 * @return Stream para comunicação com o servidor.
+	 */
 	public synchronized PrintStream getOutput() {
 		return output;
 	}
 
+	/**
+	 * Retorna o buffer para leitura do servidor.
+	 * @return Buffer de leitura.
+	 */
 	public synchronized BufferedReader getInput() {
 		return input;
 	}
 
+	/**
+	 * Retorna o estado atual da conexão.
+	 * @return Verdadeiro caso esteja conectado, falso caso contrário.
+	 */
 	public boolean isConnected() {
 		return connected;
 	}
 
+	/**
+	 * Altera o estado atual da conexão.
+	 * @param connected Novo estado da conexão.
+	 */
 	public synchronized void setConnected(boolean connected) {
 		this.connected = connected;
 	}
 	
+	/**
+	 * Encerra a conexão com o servidor.
+	 */
 	public void disconnect()
 	{
 		try {
@@ -90,7 +137,6 @@ public class Connection {
 		result = prime * result + ((socket == null) ? 0 : socket.hashCode());
 		return result;
 	}
-
 
 	@Override
 	public boolean equals(Object obj) {

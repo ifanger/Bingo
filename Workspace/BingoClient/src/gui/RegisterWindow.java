@@ -22,6 +22,11 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
+/**
+ * Formulário de Registro
+ * @author Gustavo Ifanger
+ *
+ */
 public class RegisterWindow extends JFrame {
 
 	private static final long serialVersionUID = 1L;

@@ -22,6 +22,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+/**
+ * Formulário de Jogo
+ * @author Gustavo Ifanger
+ *
+ */
 public class GameWindow extends JFrame {
 	private LoginWindow login;
 	private Connection connection;
@@ -103,26 +108,46 @@ public class GameWindow extends JFrame {
 		});
 	}
 	
+	/**
+	 * Exibe mensagem na label.
+	 * @param message Mensagem a ser exibida.
+	 */
 	public void showMessage(String message)
 	{
 		this.lbMensagem.setText(message);
 	}
 	
+	/**
+	 * Exibe uma mensagem numa caixa de diálogo.
+	 * @param message Mensagem a ser exibida.
+	 */
 	public void showMessageBox(String message)
 	{
 		JOptionPane.showMessageDialog(null, message);
 	}
 	
+	/**
+	 * Retorna a lista de botões da cartela.
+	 * @return Botões da cartela.
+	 */
 	public ArrayList<JButton> getButtons()
 	{
 		return this.buttons;
 	}
 	
+	/**
+	 * Retorna o botão de bingo.
+	 * @return Botão de bingo.
+	 */
 	public JButton getBingoButton()
 	{
 		return this.btnBingo;
 	}
 	
+	/**
+	 * Método chamado quando a cartela é recebida do servidor.
+	 * @param cartela Cartela recebida do servidor.
+	 */
 	public void onCartelaReceived(Cartela cartela)
 	{
 		for(int i = 0; i < 24; i++)
