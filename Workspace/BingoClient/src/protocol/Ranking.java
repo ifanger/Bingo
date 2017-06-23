@@ -29,6 +29,24 @@ public class Ranking {
 	 */
 	public Ranking(Player p1, Player p2, Player p3)
 	{
+		if(p1 != null)
+		{
+			p1.setPassword(null);
+			p1.setEmail(null);
+		}
+		
+		if(p2 != null)
+		{
+			p2.setPassword(null);
+			p2.setEmail(null);
+		}
+		
+		if(p3 != null)
+		{
+			p3.setPassword(null);
+			p3.setEmail(null);
+		}
+		
 		this.firstPlayer = p1;
 		this.secondPlayer = p2;
 		this.thirdPlayer = p3;
